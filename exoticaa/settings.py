@@ -54,7 +54,7 @@ ROOT_URLCONF = "exoticaa.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "Home" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

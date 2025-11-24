@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | EXOTICA – NIT</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #ff0055;
+            --secondary-color: #00d4ff;
+            --dark-bg: #0a0a0a;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-light: #f0f0f0;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Navbar (Consistent) */
+        .navbar {
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .btn-glow {
+            background: linear-gradient(45deg, var(--primary-color), #ff4d88);
+            color: white;
+            padding: 8px 25px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+            color: white;
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 8rem 0 4rem;
+            background: radial-gradient(circle at top right, rgba(0, 212, 255, 0.1), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(255, 0, 85, 0.1), transparent 40%);
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Content Sections */
+        .content-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary-color);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        /* Team Cards */
+        .team-card {
+            background: #151515;
+            border-radius: 15px;
+            overflow: hidden;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary-color);
+        }
+
+        .team-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 2rem auto 1rem;
+            object-fit: cover;
+            border: 3px solid var(--secondary-color);
+            background-color: #333;
+        }
+
+        .team-name {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+            color: white;
+        }
+
+        .team-role {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        footer {
+            background: #050505;
+            padding: 3rem 0;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">EXOTICA <span style="color: white; font-weight: 300;">|
+                    NIT</span></a>
+            <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mr-miss-nit.html">Mr. & Miss NIT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn-glow" href="registration.html">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1 class="page-title">About Exotica</h1>
+            <p class="lead text-muted">Discover the spirit behind NIT's grandest celebration.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <section class="container py-5">
+        <div class="row g-5">
+            <div class="col-lg-6">
+                <div class="content-card h-100">
+                    <div class="icon-box">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h2 class="mb-4">What is Exotica?</h2>
+                    <p class="text-muted">
+                        Exotica is the annual techno-cultural fest of Nalanda Institute of Technology (NIT). It is a
+                        melting pot of talent, creativity, and innovation, bringing together students from across the
+                        region to compete, collaborate, and celebrate.
+                    </p>
+                    <p class="text-muted">
+                        From high-octane coding battles to mesmerizing dance performances, Exotica offers a platform for
+                        every passion. It's not just an event; it's an emotion that resonates with the vibrant spirit of
+                        youth.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="content-card h-100">
+                    <div class="icon-box">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h2 class="mb-4">Mission & Vision</h2>
+                    <h5 class="text-white">Our Mission</h5>
+                    <p class="text-muted mb-4">
+                        To foster a culture of excellence and camaraderie among students by providing a world-class
+                        platform for showcasing technical and cultural talents.
+                    </p>
+                    <h5 class="text-white">Our Vision</h5>
+                    <p class="text-muted">
+                        To become the premier student festival in the region, known for its innovation, inclusivity, and
+                        grandeur, inspiring future leaders and creators.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Organizing Committee -->
+    <section class="py-5 bg-darker">
+        <div class="container">
+            <h2 class="text-center mb-5" style="font-size: 2.5rem;">Organizing Committee</h2>
+            <div class="row g-4 justify-content-center">
+                <!-- Member 1 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="team-card">
+                        <img src="" alt="Coordinator" class="team-img"> <!-- Placeholder -->
+                        <h4 class="team-name">Rahul Sharma</h4>
+                        <p class="team-role">Student Coordinator</p>
+                    </div>
+                </div>
+                <!-- Member 2 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="team-card">
+                        <img src="" alt="Secretary" class="team-img"> <!-- Placeholder -->
+                        <h4 class="team-name">Priya Patel</h4>
+                        <p class="team-role">Cultural Secretary</p>
+                    </div>
+                </div>
+                <!-- Member 3 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="team-card">
+                        <img src="" alt="Head" class="team-img"> <!-- Placeholder -->
+                        <h4 class="team-name">Amit Singh</h4>
+                        <p class="team-role">Technical Head</p>
+                    </div>
+                </div>
+                <!-- Member 4 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="team-card">
+                        <img src="" alt="Manager" class="team-img"> <!-- Placeholder -->
+                        <h4 class="team-name">Sneha Das</h4>
+                        <p class="team-role">Event Manager</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <h4 class="mb-3" style="font-family: 'Playfair Display', serif;">EXOTICA – NIT</h4>
+            <p class="text-muted mb-4">The biggest annual fest of Nalanda Institute of Technology.</p>
+            <div class="mb-4">
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="small text-muted mb-0">&copy; 2025 EXOTICA NIT. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

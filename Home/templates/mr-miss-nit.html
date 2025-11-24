@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. & Miss NIT | EXOTICA – NIT</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #ff0055;
+            --secondary-color: #00d4ff;
+            --dark-bg: #0a0a0a;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-light: #f0f0f0;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Navbar (Consistent) */
+        .navbar {
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .btn-glow {
+            background: linear-gradient(45deg, var(--primary-color), #ff4d88);
+            color: white;
+            padding: 8px 25px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            height: 80vh;
+            background: url('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-content {
+            z-index: 1;
+            padding: 2rem;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 0, 85, 0.8);
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #ddd;
+            margin-bottom: 2rem;
+        }
+
+        /* Content Sections */
+        .info-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            height: 100%;
+            transition: transform 0.3s ease;
+            color: white;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .criteria-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .criteria-list li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .criteria-list i {
+            color: var(--secondary-color);
+        }
+
+        /* Past Winners */
+        .winner-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            filter: grayscale(100%);
+            transition: all 0.5s ease;
+            border: 1px solid var(--glass-border);
+        }
+
+        .winner-container:hover .winner-img {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+            border-color: var(--primary-color);
+        }
+
+        .winner-caption {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #050505;
+            padding: 3rem 0;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">EXOTICA <span style="color: white; font-weight: 300;">|
+                    NIT</span></a>
+            <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="mr-miss-nit.html">Mr. & Miss NIT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn-glow" href="registration.html">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">The Crown Awaits</h1>
+            <p class="hero-subtitle">The search for the face of NIT begins here.</p>
+            <a href="registration.html" class="btn-glow" style="padding: 15px 40px; font-size: 1.2rem;">Register Now</a>
+        </div>
+    </section>
+
+    <!-- Details Section -->
+    <section class="container py-5">
+        <div class="row g-5">
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <h2 class="mb-4 text-white">Event Description</h2>
+                    <p class="text-muted mb-4" style="color: white;">
+                        Mr. & Miss NIT is not just a beauty pageant; it's a test of personality, intelligence, and
+                        charisma. Contestants will go through multiple rounds including ramp walk, talent showcase, and
+                        Q&A sessions to prove their mettle.
+                    </p>
+                    <p class="text-muted">
+                        Do you have what it takes to represent the spirit of our institute? Step into the spotlight and
+                        let your confidence shine.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <h2 class="mb-4 text-white">Judging Criteria</h2>
+                    <ul class="criteria-list text-muted">
+                        <li><i class="fas fa-check-circle"></i> Confidence & Stage Presence</li>
+                        <li><i class="fas fa-check-circle"></i> Attire & Grooming</li>
+                        <li><i class="fas fa-check-circle"></i> Communication Skills</li>
+                        <li><i class="fas fa-check-circle"></i> Talent & Creativity</li>
+                        <li><i class="fas fa-check-circle"></i> Intelligence & Wit (Q&A)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Past Winners -->
+    <section class="py-5 bg-darker">
+        <div class="container">
+            <h2 class="text-center mb-5" style="font-size: 2.5rem;">Past Winners</h2>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-5">
+                    <div class="winner-container">
+                        <!-- Placeholder image -->
+                        <div class="winner-img"
+                            style="background: #222; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-user-tie fa-5x text-muted"></i>
+                        </div>
+                        <div class="winner-caption">
+                            <h3 class="text-white">Rohan Verma</h3>
+                            <p class="text-primary">Mr. NIT 2024</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="winner-container">
+                        <!-- Placeholder image -->
+                        <div class="winner-img"
+                            style="background: #222; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-user-graduate fa-5x text-muted"></i>
+                        </div>
+                        <div class="winner-caption">
+                            <h3 class="text-white">Ananya Singh</h3>
+                            <p class="text-primary">Miss NIT 2024</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <h4 class="mb-3" style="font-family: 'Playfair Display', serif;">EXOTICA – NIT</h4>
+            <p class="text-muted mb-4">The biggest annual fest of Nalanda Institute of Technology.</p>
+            <div class="mb-4">
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="small text-muted mb-0">&copy; 2025 EXOTICA NIT. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
