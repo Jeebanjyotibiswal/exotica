@@ -1,0 +1,593 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | EXOTICA – NIT</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #ff0055;
+            --secondary-color: #00d4ff;
+            --accent-color: #ccff00;
+            --dark-bg: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: #ffffff;
+            --neon-glow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color), 0 0 40px var(--primary-color);
+            --neon-blue: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+        }
+
+        body {
+            background: linear-gradient(-45deg, #0a0a0a, #1a0b2e, #001f3f, #0a0a0a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.8rem;
+            background: linear-gradient(to right, #fff, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s infinite linear;
+            background-size: 200% auto;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 600;
+            margin-left: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            text-shadow: var(--neon-glow);
+            transform: scale(1.1);
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 8rem 0 4rem;
+            background: radial-gradient(circle at top right, rgba(0, 212, 255, 0.1), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(255, 0, 85, 0.1), transparent 40%);
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-glow {
+            background: transparent;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            border: 2px solid var(--primary-color);
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-glow:hover::before {
+            width: 100%;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 30px var(--primary-color);
+            transform: translateY(-5px);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Content Sections */
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary-color);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .about-text {
+            color: #ffffff !important;
+            font-size: 1rem;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+
+        /* Terms List */
+        .terms-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .terms-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .terms-list li:last-child {
+            border-bottom: none;
+        }
+
+        .terms-list i {
+            color: var(--primary-color);
+            margin-right: 12px;
+            font-size: 0.9rem;
+        }
+
+        /* Values Grid */
+        .value-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .value-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary-color);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .value-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+        }
+
+        .value-title {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Made With Section */
+        .made-with-section {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .made-with-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--secondary-color);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .name-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            height: 100%;
+        }
+
+        .name-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .photo-container {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 1.5rem;
+            border: 3px solid var(--primary-color);
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
+        }
+
+        .developer-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .person-name {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .person-role {
+            color: var(--primary-color);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 4rem 0;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-text {
+            color: #ffffff !important;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .footer-small {
+            color: #ffffff !important;
+            opacity: 0.8;
+        }
+
+        .social-icon {
+            color: var(--text-light);
+            font-size: 1.8rem;
+            margin: 0 15px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--primary-color);
+            text-shadow: 0 0 15px var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            .made-with-title {
+                font-size: 2rem;
+            }
+            .photo-container {
+                width: 120px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">EXOTICA <span style="color: white; font-weight: 300;">|
+                    NIT</span></a>
+            <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'mr-miss-nit' %}">Mr. & Miss NIT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'notices' %}">Notice</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_login' %}">Admin</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn-glow" href="{% url 'register' %}"
+                            style="padding: 8px 25px; font-size: 0.9rem;">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1 class="page-title">About Exotica</h1>
+            <p class="lead footer-text">Discover the spirit behind NIT's grandest celebration.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <section class="container py-5">
+        <div class="row g-5">
+            <!-- What is Exotica? -->
+            <div class="col-lg-6">
+                <div class="content-card h-100">
+                    <div class="icon-box">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h2 class="mb-4" style="color: var(--secondary-color);">What is Exotica?</h2>
+                    <p class="about-text">
+                        Exotica is the annual techno-cultural fest of Nalanda Institute of Technology (NIT). It is a
+                        melting pot of talent, creativity, and innovation, bringing together students from across the
+                        region to compete, collaborate, and celebrate.
+                    </p>
+                    <p class="about-text">
+                        From high-octane coding battles to mesmerizing dance performances, Exotica offers a platform for
+                        every passion. It's not just an event; it's an emotion that resonates with the vibrant spirit of
+                        youth.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Mission & Vision -->
+            <div class="col-lg-6">
+                <div class="content-card h-100">
+                    <div class="icon-box">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h2 class="mb-4" style="color: var(--secondary-color);">Mission & Vision</h2>
+                    <h5 class="text-white">Our Mission</h5>
+                    <p class="about-text mb-4">
+                        To foster a culture of excellence and camaraderie among students by providing a world-class
+                        platform for showcasing technical and cultural talents.
+                    </p>
+                    <h5 class="text-white">Our Vision</h5>
+                    <p class="about-text">
+                        To become the premier student festival in the region, known for its innovation, inclusivity, and
+                        grandeur, inspiring future leaders and creators.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- New Row for Terms & Conditions and Our Values -->
+        <div class="row g-5 mt-0">
+            <!-- Terms & Conditions -->
+            <div class="col-lg-6">
+                <div class="content-card h-100">
+                    <div class="icon-box">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <h2 class="mb-4" style="color: var(--primary-color);">Terms & Conditions</h2>
+                    <p class="about-text mb-4">
+                        To ensure a safe, enjoyable, and memorable experience for all participants, please adhere to the following rules:
+                    </p>
+                    <ul class="terms-list">
+                        <li><i class="fas fa-ban"></i> No alcohol, drugs, or intoxicants are allowed inside the campus.</li>
+                        <li><i class="fas fa-users"></i> Maintain discipline and respect faculty, volunteers, and fellow participants.</li>
+                        <li><i class="fas fa-id-card"></i> Entry is strictly allowed with a valid College ID Card.</li>
+                        <li><i class="fas fa-id-badge"></i> Day scholars must also carry their ID at all times.</li>
+                        <li><i class="fas fa-exclamation-triangle"></i> No unauthorized gatherings or crowding in restricted zones.</li>
+                        <li><i class="fas fa-clock"></i> Participants are expected to follow event timings strictly.</li>
+                        <li><i class="fas fa-gavel"></i> Any damage to college property will lead to penalties and removal from the fest.</li>
+                        <li><i class="fas fa-camera"></i> Photography and videography may be used for promotional purposes.</li>
+                        <li><i class="fas fa-user-shield"></i> The organizing committee reserves the right to make final decisions on any matter.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Our Values -->
+            <div class="col-lg-6">
+                <div class="content-card h-100">
+                    <div class="icon-box">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h2 class="mb-4" style="color: var(--primary-color);">Our Values</h2>
+                    <p class="about-text mb-4">
+                        At Exotica, we believe in creating an environment that nurtures talent, builds character, and celebrates diversity. Our core values define who we are:
+                    </p>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <h5 class="value-title">Innovation</h5>
+                                <p class="about-text small">Encouraging creative thinking and novel ideas in every aspect of the fest.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="fas fa-hands-helping"></i>
+                                </div>
+                                <h5 class="value-title">Collaboration</h5>
+                                <p class="about-text small">Fostering teamwork and cooperation among students from diverse backgrounds.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="fas fa-medal"></i>
+                                </div>
+                                <h5 class="value-title">Excellence</h5>
+                                <p class="about-text small">Striving for the highest standards in all competitions and performances.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h5 class="value-title">Inclusivity</h5>
+                                <p class="about-text small">Creating a welcoming space for everyone, regardless of background or skill level.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="fas fa-handshake"></i>
+                                </div>
+                                <h5 class="value-title">Integrity</h5>
+                                <p class="about-text small">Maintaining honesty, fairness, and ethical conduct in all competitions.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="fas fa-laugh-beam"></i>
+                                </div>
+                                <h5 class="value-title">Joy & Celebration</h5>
+                                <p class="about-text small">Creating moments of happiness, fun, and lifelong memories.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Made With Section -->
+    <section class="made-with-section">
+        <div class="container">
+            <h2 class="made-with-title">Made With ❤️</h2>
+            <div class="row justify-content-center">
+                <!-- JeebanJyoti Biswal -->
+<!-- JeebanJyoti Biswal -->
+<div class="col-md-5 mb-4">
+    <div class="name-card">
+        <div class="photo-container">
+            <!-- Use Django static tag -->
+            <img src="{% static 'Home/Jeeban.jpg' %}" alt="JeebanJyoti Biswal" class="developer-photo">
+        </div>
+        <h3 class="person-name">JeebanJyoti Biswal</h3>
+        <p class="person-role">Developer & Designer</p>
+    </div>
+</div>
+
+<!-- Prahallad Nayak -->
+<div class="col-md-5 mb-4">
+    <div class="name-card">
+        <div class="photo-container">
+            <!-- Use Django static tag -->
+            <img src="{% static 'Home/Prahallad.jpg' %}" alt="Prahallad Nayak" class="developer-photo">
+        </div>
+        <h3 class="person-name">Prahallad Nayak</h3>
+        <p class="person-role">Developer & Designer</p>
+    </div>
+</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <h4 class="mb-3" style="font-family: 'Playfair Display', serif;">EXOTICA – NIT</h4>
+            <p class="footer-text mb-4">The biggest annual fest of Nalanda Institute of Technology.</p>
+            <div class="mb-4">
+               <a href="https://www.facebook.com/nalandabhubaneswar/" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/nalandabbsr?igsh=MTFyeWFwdGoxYnVrNA==" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://x.com/NALANDABHUBANE1" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="http://www.youtube.com/@nalandabhubaneswar4971" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="footer-small mb-0">&copy; 2025 EXOTICA NIT. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

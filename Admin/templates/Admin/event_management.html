@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management | EXOTICA Admin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <style>
+        :root {
+            --primary-color: #ff0055;
+            --secondary-color: #00d4ff;
+            --accent-color: #ccff00;
+            --dark-bg: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: #ffffff;
+            --neon-glow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(-45deg, #0a0a0a, #1a0b2e, #001f3f, #0a0a0a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        h1, h2, h3, h4 { 
+            font-family: 'Playfair Display', serif; 
+            color: #ffffff !important;
+            margin: 0;
+        }
+        
+        /* Mobile Navbar */
+        .mobile-navbar {
+            display: none;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            padding: 0.8rem 1rem;
+            height: 60px;
+        }
+        
+        .mobile-navbar .container-fluid {
+            padding: 0;
+        }
+        
+        .mobile-navbar .navbar-brand {
+            font-size: 1.2rem;
+            padding: 0;
+        }
+        
+        .mobile-navbar .navbar-toggler {
+            padding: 0.25rem 0.5rem;
+            font-size: 1rem;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .mobile-navbar .navbar-collapse {
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 0 0 15px 15px;
+            border: 1px solid var(--glass-border);
+            border-top: none;
+            padding: 1rem;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+        }
+        
+        .mobile-navbar .nav-item {
+            margin: 0.3rem 0;
+        }
+        
+        .mobile-navbar .nav-link {
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .mobile-navbar .nav-link.active {
+            background: rgba(255, 0, 85, 0.2);
+            color: white;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
+        }
+        
+        /* Desktop Sidebar */
+        .dashboard-container { 
+            display: block; 
+            min-height: 100vh;
+            width: 100%;
+        }
+        
+        .sidebar { 
+            background: rgba(10, 10, 10, 0.95); 
+            backdrop-filter: blur(20px); 
+            border-right: 1px solid var(--glass-border); 
+            height: 100vh; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 260px; 
+            padding: 2rem 1rem; 
+            z-index: 1000; 
+            box-shadow: 5px 0 30px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+        }
+        
+        .sidebar-brand { 
+            font-size: 1.6rem; 
+            font-weight: 800; 
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            text-decoration: none; 
+            display: block; 
+            margin-bottom: 2rem; 
+            text-align: center; 
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.3); 
+        }
+        
+        .nav-pills .nav-link { 
+            color: #ffffff; 
+            border-radius: 12px; 
+            margin-bottom: 0.8rem; 
+            text-align: left; 
+            padding: 12px 20px; 
+            transition: all 0.3s ease; 
+            border: 1px solid transparent; 
+            font-size: 0.95rem;
+        }
+        
+        .nav-pills .nav-link.active { 
+            background: rgba(255, 0, 85, 0.2); 
+            color: #ffffff; 
+            border: 1px solid var(--primary-color); 
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3); 
+        }
+        
+        .nav-pills .nav-link:hover:not(.active) { 
+            background: rgba(255, 255, 255, 0.15); 
+            color: #ffffff; 
+            transform: translateX(5px); 
+        }
+        
+        .nav-pills i { 
+            width: 25px; 
+            margin-right: 10px; 
+            font-size: 1rem;
+        }
+        
+        .main-content { 
+            margin-left: 260px; 
+            padding: 2rem; 
+            min-height: 100vh;
+            width: calc(100% - 260px);
+            transition: all 0.3s ease;
+        }
+        
+        .admin-card { 
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 20px; 
+            padding: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2); 
+            transition: transform 0.3s; 
+            width: 100%;
+        }
+        
+        .admin-card:hover { 
+            transform: translateY(-3px); 
+            border-color: var(--secondary-color); 
+        }
+        
+        /* Button Styles */
+        .btn { 
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .btn-primary { 
+            background: var(--secondary-color); 
+            border: none; 
+            color: #000000 !important; 
+            font-weight: 600;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); 
+            padding: 0.75rem 1.5rem;
+        }
+        
+        .btn-primary:hover { 
+            background: #00c4eb; 
+            color: #000000 !important;
+            transform: translateY(-2px);
+        }
+        
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+        
+        .btn-outline-danger {
+            border-color: var(--primary-color);
+            color: var(--primary-color) !important;
+        }
+        
+        .btn-outline-danger:hover {
+            background: rgba(255, 0, 85, 0.2);
+            border-color: var(--primary-color);
+            color: white !important;
+        }
+        
+        .btn-outline-secondary {
+            color: #ffffff !important;
+            border-color: var(--glass-border);
+        }
+        
+        .btn-outline-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff !important;
+            border-color: var(--secondary-color);
+        }
+        
+        /* Search Box */
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            color: #ffffff !important;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .search-box:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+            color: #ffffff !important;
+            outline: none;
+        }
+        
+        /* Table Container */
+        .table-container {
+            background: rgba(30, 30, 40, 0.8);
+            border-radius: 15px;
+            padding: 1rem;
+            border: 1px solid var(--glass-border);
+            overflow-x: auto;
+            backdrop-filter: blur(10px);
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        /* Table Styles */
+        .table {
+            color: #ffffff !important;
+            margin-bottom: 0;
+            font-size: 0.9rem;
+            background: transparent !important;
+            width: 100%;
+            min-width: 600px;
+        }
+        
+        .table thead th {
+            border-bottom: 2px solid var(--secondary-color);
+            background: rgba(0, 212, 255, 0.2);
+            font-weight: 700;
+            padding: 1rem 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            color: #ffffff !important;
+        }
+        
+        .table tbody td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.8rem;
+            vertical-align: middle;
+            font-weight: 400;
+            color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .table tbody th {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.8rem;
+            vertical-align: middle;
+            font-weight: 500;
+            color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .table tbody tr:hover {
+            background: rgba(0, 212, 255, 0.15) !important;
+        }
+        
+        .table tbody tr:hover th,
+        .table tbody tr:hover td {
+            background: rgba(0, 212, 255, 0.15) !important;
+        }
+        
+        /* Striped table rows */
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        
+        .table-striped tbody tr:nth-of-type(odd) th {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: rgba(255, 255, 255, 0.07);
+        }
+        
+        .table-striped tbody tr:nth-of-type(even) th {
+            background-color: rgba(255, 255, 255, 0.07);
+        }
+        
+        /* Badge Styles */
+        .badge-pill {
+            padding: 0.4rem 0.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            backdrop-filter: blur(10px);
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .badge-category {
+            background: rgba(0, 212, 255, 0.25);
+            color: #ffffff;
+            border: 1px solid rgba(0, 212, 255, 0.4);
+        }
+        
+        /* Modal Styles */
+        .modal-content {
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            color: #ffffff;
+            border-radius: 15px;
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1.2rem 1.5rem;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 1.2rem 1.5rem;
+        }
+        
+        /* Form Controls */
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: #ffffff !important;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            border-radius: 10px;
+            width: 100%;
+        }
+        
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+            color: #ffffff !important;
+            outline: none;
+        }
+        
+        .form-label {
+            color: #ffffff !important;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            display: block;
+        }
+        
+        /* Text Visibility */
+        .text-visible {
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .no-data {
+            color: #ffffff !important;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        
+        /* Custom DataTables Info */
+        .custom-dt-info {
+            color: #ffffff !important;
+            padding: 1rem 0;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00c4eb;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .main-content {
+                margin-left: 240px;
+                width: calc(100% - 240px);
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .mobile-navbar {
+                display: flex !important;
+            }
+            
+            .sidebar {
+                display: none !important;
+            }
+            
+            .main-content {
+                margin-left: 0 !important;
+                padding: 1rem !important;
+                margin-top: 60px !important;
+                width: 100% !important;
+            }
+            
+            .admin-card {
+                padding: 1.2rem;
+                border-radius: 15px;
+                margin-bottom: 1rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem !important;
+            }
+            
+            h4 {
+                font-size: 1.2rem !important;
+            }
+            
+            .table-container {
+                padding: 0.8rem;
+                border-radius: 12px;
+            }
+            
+            .table thead th {
+                padding: 0.7rem 0.6rem;
+                font-size: 0.8rem;
+            }
+            
+            .table tbody td,
+            .table tbody th {
+                padding: 0.7rem 0.6rem;
+                font-size: 0.85rem;
+            }
+            
+            .search-box {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.9rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .btn-sm {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+            }
+            
+            .badge-pill {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 0.8rem !important;
+            }
+            
+            .admin-card {
+                padding: 1rem;
+                border-radius: 12px;
+            }
+            
+            .d-flex.justify-content-between.align-items-center.mb-4.flex-wrap {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .d-flex.justify-content-between.align-items-center.mb-4.flex-wrap > div {
+                margin-bottom: 1rem;
+                width: 100%;
+            }
+            
+            .d-flex.justify-content-between.align-items-center.mb-4.flex-wrap .btn {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+            
+            .d-flex.justify-content-between.align-items-center.mb-4 {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .d-flex.justify-content-between.align-items-center.mb-4 > h4 {
+                margin-bottom: 1rem;
+                width: 100%;
+            }
+            
+            .d-flex.justify-content-between.align-items-center.mb-4 > .d-flex {
+                width: 100%;
+            }
+            
+            .input-group {
+                width: 100% !important;
+            }
+            
+            .table-container {
+                padding: 0.6rem;
+            }
+            
+            .table {
+                font-size: 0.8rem;
+                min-width: 500px;
+            }
+            
+            .table thead th {
+                padding: 0.6rem 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .table tbody td,
+            .table tbody th {
+                padding: 0.6rem 0.5rem;
+                font-size: 0.8rem;
+            }
+            
+            .action-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+            
+            .action-buttons .btn {
+                width: 100%;
+                text-align: center;
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+            }
+            
+            .modal-dialog {
+                margin: 0.5rem;
+                max-width: calc(100% - 1rem);
+            }
+            
+            .modal-content {
+                border-radius: 12px;
+            }
+            
+            .modal-header,
+            .modal-body,
+            .modal-footer {
+                padding: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .mobile-navbar {
+                padding: 0.6rem 0.8rem;
+                height: 55px;
+            }
+            
+            .mobile-navbar .navbar-brand {
+                font-size: 1.1rem;
+            }
+            
+            .mobile-navbar .navbar-collapse {
+                top: 55px;
+            }
+            
+            .main-content {
+                padding: 0.6rem !important;
+                margin-top: 55px !important;
+            }
+            
+            .admin-card {
+                padding: 0.8rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem !important;
+            }
+            
+            h4 {
+                font-size: 1.1rem !important;
+            }
+            
+            .table-container {
+                padding: 0.5rem;
+                border-radius: 10px;
+            }
+            
+            .table {
+                min-width: 450px;
+            }
+            
+            .table thead th {
+                padding: 0.5rem 0.4rem;
+                font-size: 0.7rem;
+            }
+            
+            .table tbody td,
+            .table tbody th {
+                padding: 0.5rem 0.4rem;
+                font-size: 0.75rem;
+            }
+            
+            .badge-pill {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.7rem;
+            }
+            
+            .search-box {
+                padding: 0.5rem 0.6rem;
+                font-size: 0.85rem;
+            }
+            
+            .btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+            
+            .btn-sm {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .custom-dt-info {
+                font-size: 0.8rem;
+                padding: 0.8rem 0;
+            }
+            
+            .no-data {
+                padding: 1.5rem 0.8rem;
+            }
+            
+            .no-data i {
+                font-size: 2rem !important;
+            }
+            
+            .no-data h5 {
+                font-size: 1rem !important;
+            }
+            
+            .no-data p {
+                font-size: 0.85rem !important;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .mobile-navbar .navbar-brand {
+                font-size: 1rem;
+            }
+            
+            .mobile-navbar .nav-link {
+                font-size: 0.9rem;
+                padding: 0.6rem 0.8rem;
+            }
+            
+            .main-content {
+                padding: 0.5rem !important;
+            }
+            
+            .admin-card {
+                padding: 0.6rem;
+                border-radius: 10px;
+            }
+            
+            .table-container {
+                padding: 0.4rem;
+            }
+            
+            .table {
+                min-width: 400px;
+                font-size: 0.75rem;
+            }
+            
+            .table thead th {
+                padding: 0.4rem 0.3rem;
+                font-size: 0.65rem;
+            }
+            
+            .table tbody td,
+            .table tbody th {
+                padding: 0.4rem 0.3rem;
+                font-size: 0.7rem;
+            }
+            
+            .btn {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            .mobile-navbar,
+            .sidebar,
+            .btn,
+            .input-group,
+            .modal,
+            .action-buttons {
+                display: none !important;
+            }
+            
+            .main-content {
+                margin-left: 0 !important;
+                margin-top: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+            }
+            
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            
+            .admin-card,
+            .table-container {
+                background: white !important;
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                color: black !important;
+            }
+            
+            .table,
+            .table th,
+            .table td {
+                color: black !important;
+                border-color: #ddd !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Navbar -->
+    <nav class="mobile-navbar navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <span style="font-weight:800; background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); 
+                    -webkit-background-clip: text; -webkit-text-fill-color: transparent;">EXOTICA</span>
+                <span style="font-weight:300; color:var(--secondary-color); font-size: 0.9rem;">Admin</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobileNavbarMenu">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_dashboard' %}">
+                            <i class="fas fa-users me-2"></i>Participants
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'event_management' %}">
+                            <i class="fas fa-calendar-alt me-2"></i>Manage Events
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'upload-result' %}">
+                            <i class="fas fa-trophy me-2"></i>Upload Results
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'announcment' %}">
+                            <i class="fas fa-bullhorn me-2"></i>Announcements
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{% url 'admin_logout' %}">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="dashboard-container">
+        <!-- Desktop Sidebar -->
+        <div class="sidebar">
+            <a href="#" class="sidebar-brand">EXOTICA <span style="font-weight:300; color:white; font-size: 0.9rem;">Admin</span></a>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="{% url 'admin_dashboard' %}" class="nav-link">
+                        <i class="fas fa-users"></i> Participants
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'event_management' %}" class="nav-link active">
+                        <i class="fas fa-calendar-alt"></i> Manage Events
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'upload-result' %}" class="nav-link">
+                        <i class="fas fa-trophy"></i> Upload Results
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'announcment' %}" class="nav-link">
+                        <i class="fas fa-bullhorn"></i> Announcements
+                    </a>
+                </li>
+            </ul>
+            <div style="margin-top: auto; padding-top: 1.5rem;">
+                <a href="{% url 'admin_logout' %}" class="nav-link text-danger" style="border: 1px solid rgba(255,0,0,0.3); text-align: center; padding: 0.8rem; font-size: 0.9rem;">
+                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Page Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+                <div>
+                    <h2 class="mb-1 text-visible"><i class="fas fa-calendar-alt me-2"></i>Event Management</h2>
+                    <p class="text-visible mb-0" style="font-size: 0.95rem;">Manage all events for EXOTICA</p>
+                </div>
+                <button class="btn btn-primary mt-2 mt-md-0" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                    <i class="fas fa-plus me-2"></i>Add New Event
+                </button>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); color: white; padding: 0.8rem 1rem; font-size: 0.9rem;">
+                    {{ message }}
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" style="padding: 0.5rem;"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Events Table -->
+            <div class="admin-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0 text-visible"><i class="fas fa-table me-2"></i>All Events</h4>
+                    <div class="d-flex align-items-center">
+                        <div class="input-group">
+                            <input type="text" id="searchInput" class="form-control search-box" placeholder="Search events...">
+                            <button class="btn btn-outline-secondary ms-2" type="button" id="resetFilters" style="padding: 0.75rem 1rem;">
+                                <i class="fas fa-redo"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table table-hover table-striped" id="eventsTable">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-visible">#</th>
+                                <th scope="col" class="text-visible">Event Name</th>
+                                <th scope="col" class="text-visible">Category</th>
+                                <th scope="col" class="text-visible">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event in events %}
+                            <tr>
+                                <th scope="row" class="text-visible">{{ forloop.counter }}</th>
+                                <td class="text-visible">{{ event.event_name }}</td>
+                                <td>
+                                    <span class="badge badge-pill badge-category text-visible">{{ event.get_category_display }}</span>
+                                </td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteEvent({{ event.id }})" title="Delete">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center py-5 no-data">
+                                    <div class="py-4">
+                                        <i class="fas fa-calendar-alt fa-3x mb-3" style="color: rgba(255, 255, 255, 0.3);"></i>
+                                        <h5 class="text-visible mb-2">No events found</h5>
+                                        <p class="text-muted mb-0" style="font-size: 0.9rem;">Add new events using the "Add New Event" button above.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- DataTables Info -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="custom-dt-info" id="tableInfo">
+                        Showing 1 to {{ events|length }} of {{ events|length }} entries
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Event Modal -->
+    <div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-visible" id="addEventModalLabel"><i class="fas fa-plus-circle me-2"></i>Add New Event</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="{% url 'add_event' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Event Name</label>
+                            <input type="text" class="form-control" name="event_name" required placeholder="Enter event name">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Event Category</label>
+                            <select class="form-control" name="category" required>
+                                <option value="">Select category</option>
+                                <option value="LITERARY">LITERARY EVENTS</option>
+                                <option value="ATHLETICS">ATHLETICS EVENTS</option>
+                                <option value="CULTURAL">CULTURAL EVENTS</option>
+                                <option value="GAMES">GAMES</option>
+                                <option value="SPORTS">SPORTS</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable with responsive settings
+            var table = $('#eventsTable').DataTable({
+                "pageLength": 10,
+                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                "language": {
+                    "search": "",
+                    "searchPlaceholder": "Search events...",
+                    "lengthMenu": "Show _MENU_ entries",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "infoEmpty": "Showing 0 to 0 of 0 entries",
+                    "infoFiltered": "(filtered from _MAX_ total entries)",
+                    "zeroRecords": "No matching events found",
+                    "paginate": {
+                        "first": "First",
+                        "last": "Last",
+                        "next": "Next",
+                        "previous": "Previous"
+                    }
+                },
+                "dom": '<"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                "responsive": true,
+                "autoWidth": false,
+                "order": [[0, 'asc']],
+                "drawCallback": function(settings) {
+                    // Update custom info text
+                    var api = this.api();
+                    var pageInfo = api.page.info();
+                    var infoText = `Showing ${pageInfo.start + 1} to ${pageInfo.end} of ${pageInfo.recordsDisplay} entries`;
+                    $('#tableInfo').text(infoText);
+                },
+                "initComplete": function() {
+                    // Update the info text initially
+                    var pageInfo = this.api().page.info();
+                    var infoText = `Showing ${pageInfo.start + 1} to ${pageInfo.end} of ${pageInfo.recordsDisplay} entries`;
+                    $('#tableInfo').text(infoText);
+                    
+                    // Hide default DataTables elements for mobile
+                    if ($(window).width() < 768) {
+                        $('.dataTables_length, .dataTables_filter').hide();
+                    }
+                }
+            });
+            
+            // Connect custom search box to DataTable
+            $('#searchInput').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+            
+            // Reset filters - clear search and reset table
+            $('#resetFilters').on('click', function() {
+                $('#searchInput').val('');
+                table.search('').draw();
+                table.page.len(10).draw();
+            });
+            
+            // Handle window resize for responsive behavior
+            $(window).on('resize', function() {
+                if ($(window).width() < 768) {
+                    $('.dataTables_length, .dataTables_filter').hide();
+                } else {
+                    $('.dataTables_length, .dataTables_filter').show();
+                }
+                table.columns.adjust().draw();
+            });
+            
+            // Fix DataTable pagination styling
+            table.on('draw', function() {
+                // Style pagination buttons for mobile
+                if ($(window).width() < 768) {
+                    $('.paginate_button').addClass('btn-sm');
+                }
+            });
+        });
+
+        function deleteEvent(eventId) {
+            if (confirm('Are you sure you want to delete this event?')) {
+                // Show loading state
+                const deleteBtn = event.target.closest('button');
+                const originalHTML = deleteBtn.innerHTML;
+                deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                deleteBtn.disabled = true;
+                
+                fetch('/admin-panel/delete-event/' + eventId + '/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Show success message
+                        const alertDiv = document.createElement('div');
+                        alertDiv.className = 'alert alert-success alert-dismissible fade show';
+                        alertDiv.style.cssText = 'background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); color: white; padding: 0.8rem; font-size: 0.9rem;';
+                        alertDiv.innerHTML = `
+                            <i class="fas fa-check-circle me-2"></i>Event deleted successfully!
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" style="padding: 0.5rem;"></button>
+                        `;
+                        document.querySelector('.main-content').prepend(alertDiv);
+                        
+                        // Reload after 1.5 seconds
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        alert('Error deleting event');
+                        deleteBtn.innerHTML = originalHTML;
+                        deleteBtn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error deleting event');
+                    deleteBtn.innerHTML = originalHTML;
+                    deleteBtn.disabled = false;
+                });
+            }
+        }
+        
+        // Helper function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        // Handle mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+            
+            if (navbarToggler && navbarCollapse) {
+                navbarToggler.addEventListener('click', function() {
+                    navbarCollapse.classList.toggle('show');
+                });
+                
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!navbarToggler.contains(event.target) && !navbarCollapse.contains(event.target)) {
+                        navbarCollapse.classList.remove('show');
+                    }
+                });
+                
+                // Close mobile menu when clicking a link
+                document.querySelectorAll('.mobile-navbar .nav-link').forEach(link => {
+                    link.addEventListener('click', function() {
+                        navbarCollapse.classList.remove('show');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

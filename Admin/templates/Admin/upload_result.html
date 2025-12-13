@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | EXOTICA – Upload Results</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #ff0055;
+            --secondary-color: #00d4ff;
+            --accent-color: #ccff00;
+            --dark-bg: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: #ffffff;
+            --neon-glow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+        }
+
+        body {
+            background: linear-gradient(-45deg, #0a0a0a, #1a0b2e, #001f3f, #0a0a0a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: #ffffff !important;
+        }
+
+        /* Success Message Toast */
+        .success-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: rgba(0, 255, 136, 0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid #00ff88;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            animation: slideIn 0.5s ease, fadeOut 0.5s ease 2.5s forwards;
+            max-width: 350px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Mobile Navbar */
+        .mobile-navbar {
+            display: none;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            padding: 1rem;
+        }
+
+        /* Dashboard Section */
+        .dashboard-container {
+            display: block;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            padding: 2rem 1rem;
+            z-index: 1000;
+            box-shadow: 5px 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-brand {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 3rem;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
+        }
+
+        .nav-pills .nav-link {
+            color: #ccc;
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
+            text-align: left;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-pills .nav-link.active {
+            background: rgba(255, 0, 85, 0.2);
+            color: white;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
+        }
+
+        .nav-pills .nav-link:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .nav-pills i {
+            width: 25px;
+            margin-right: 10px;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Upload Form Styling */
+        .result-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem !important;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: 1rem auto;
+            width: 95%;
+        }
+
+        .result-container h2 {
+            text-align: center;
+            margin-bottom: 1rem !important;
+            color: var(--secondary-color);
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem !important;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem !important;
+            color: #ffffff !important;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            letter-spacing: 0.3px;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid var(--glass-border);
+            color: #ffffff !important;
+            padding: 10px 15px !important;
+            border-radius: 10px;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7) !important;
+            font-weight: 300;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-color: var(--secondary-color);
+            color: #ffffff !important;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+            outline: none;
+        }
+
+        .form-select {
+            background: rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 10px 15px !important;
+            border-radius: 10px;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .form-select option {
+            background-color: #1a1a2e !important;
+            color: #ffffff !important;
+            padding: 12px !important;
+            font-size: 1rem;
+        }
+
+        .form-select option[value="1st"] {
+            color: #ffd700 !important;
+            font-weight: 600;
+        }
+
+        .form-select option[value="2nd"] {
+            color: #c0c0c0 !important;
+            font-weight: 600;
+        }
+
+        .form-select option[value="3rd"] {
+            color: #cd7f32 !important;
+            font-weight: 600;
+        }
+
+        .form-select:focus {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-color: var(--secondary-color);
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+            outline: none;
+        }
+
+        .btn-submit {
+            background: var(--secondary-color);
+            border: none;
+            color: #000000 !important;
+            padding: 12px 25px !important;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 0.8rem !important;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+            font-size: 1rem;
+        }
+
+        .btn-submit:hover {
+            background: #00b8e6;
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            color: #000000 !important;
+        }
+
+        /* Featured checkbox styling */
+        .form-check-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .form-check-label {
+            margin-left: 10px;
+            cursor: pointer;
+            color: #ffffff;
+        }
+
+        .section-separator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2.5rem auto;
+            position: relative;
+            max-width: 800px;
+        }
+
+        .separator-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+        }
+
+        .separator-icon {
+            margin: 0 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            padding: 1rem;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        .separator-icon i {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.4); }
+            100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
+        }
+
+        .section-title {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-edit {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid var(--secondary-color);
+            color: var(--secondary-color);
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-edit:hover {
+            background: rgba(0, 212, 255, 0.3);
+            color: white;
+        }
+
+        .btn-featured {
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid #ffd700;
+            color: #ffd700;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-featured:hover {
+            background: rgba(255, 215, 0, 0.3);
+            color: white;
+        }
+
+        .btn-delete {
+            background: rgba(255, 0, 85, 0.2);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-delete:hover {
+            background: rgba(255, 0, 85, 0.3);
+            color: white;
+        }
+
+        /* Table Styling */
+        .results-table {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 1.5rem;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 1rem !important;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .table-header h3 {
+            margin: 0;
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #e0e0e0;
+            min-width: 700px;
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem !important;
+            text-align: left;
+            border-bottom: 2px solid var(--glass-border);
+            color: var(--secondary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        td {
+            padding: 1rem !important;
+            border-bottom: 1px solid var(--glass-border);
+            vertical-align: middle;
+            color: #ffffff !important;
+            font-size: 0.95rem;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Badge styling */
+        .featured-badge {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            border: 1px solid #ffd700;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .normal-badge {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .position-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .position-1st {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            border: 1px solid #ffd700;
+        }
+
+        .position-2nd {
+            background: rgba(192, 192, 192, 0.2);
+            color: #c0c0c0;
+            border: 1px solid #c0c0c0;
+        }
+
+        .position-3rd {
+            background: rgba(205, 127, 50, 0.2);
+            color: #cd7f32;
+            border: 1px solid #cd7f32;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem !important;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .dashboard-header h2 {
+            font-size: 1.6rem;
+            margin-bottom: 0.3rem !important;
+        }
+
+        .text-muted {
+            color: #ffffff !important;
+            opacity: 0.9;
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        /* File input styling */
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-container input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: #ffffff;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .file-input-label:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--secondary-color);
+        }
+
+        .file-name {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        /* Current photo preview */
+        .current-photo {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .current-photo img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid var(--secondary-color);
+        }
+
+        /* Photo preview */
+        .photo-preview {
+            width: 55px;
+            height: 55px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--secondary-color);
+            display: block;
+            margin: 0 auto;
+        }
+
+        .no-image {
+            color: #aaa;
+            font-style: italic;
+            text-align: center;
+            display: block;
+            font-size: 0.85rem;
+        }
+
+        /* Modal for delete confirmation */
+        .modal-content {
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            color: #ffffff;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--glass-border);
+        }
+
+        /* Warning message */
+        .featured-warning {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #ffd700;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .featured-warning i {
+            color: #ffd700;
+            margin-right: 8px;
+        }
+
+        /* Featured Limit Modal Styles */
+        .featured-limit-modal .modal-content {
+            background: linear-gradient(135deg, rgba(20, 20, 30, 0.98), rgba(30, 15, 50, 0.98));
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+                border-color: rgba(255, 215, 0, 0.3);
+            }
+            to {
+                box-shadow: 0 0 50px rgba(255, 215, 0, 0.4);
+                border-color: rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        .featured-limit-modal .modal-header {
+            background: rgba(255, 215, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+        }
+
+        .featured-limit-modal .modal-title {
+            color: #ffd700;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .featured-limit-modal .modal-body {
+            padding: 2rem;
+        }
+
+        .featured-limit-modal .warning-icon {
+            font-size: 4rem;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-limit-modal .current-featured-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 1.5rem 0;
+            padding-right: 10px;
+        }
+
+        .featured-limit-modal .current-featured-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .featured-limit-modal .current-featured-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .featured-limit-modal .current-featured-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .featured-limit-modal .featured-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .featured-limit-modal .featured-item:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.4);
+            transform: translateX(5px);
+        }
+
+        .featured-limit-modal .featured-item .winner-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .featured-limit-modal .featured-item .winner-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            border: 2px solid #ffd700;
+            object-fit: cover;
+        }
+
+        .featured-limit-modal .featured-item .winner-details {
+            flex: 1;
+        }
+
+        .featured-limit-modal .featured-item .winner-name {
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .featured-limit-modal .featured-item .winner-event {
+            color: #ffd700;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .featured-limit-modal .unfeature-btn {
+            background: rgba(255, 0, 85, 0.2);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .featured-limit-modal .unfeature-btn:hover {
+            background: rgba(255, 0, 85, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .featured-limit-modal .modal-footer {
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 1.5rem;
+        }
+
+        .featured-limit-modal .continue-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid var(--secondary-color);
+            color: var(--secondary-color);
+            padding: 10px 30px;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .featured-limit-modal .continue-btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .mobile-navbar {
+                display: block !important;
+            }
+            
+            .sidebar {
+                display: none !important;
+            }
+            
+            .main-content {
+                margin-left: 0 !important;
+                padding: 1rem !important;
+                margin-top: 70px !important;
+            }
+            
+            .result-container {
+                margin: 0.5rem auto !important;
+                padding: 1.2rem !important;
+                max-width: 95% !important;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+                margin-bottom: 1rem !important;
+            }
+            
+            .success-toast {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+            
+            .separator-icon {
+                width: 60px;
+                height: 60px;
+                padding: 0.8rem;
+            }
+            
+            .separator-icon i {
+                font-size: 1.5rem;
+            }
+
+            .featured-limit-modal .featured-item .winner-info {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .featured-limit-modal .unfeature-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .results-table {
+                margin: 0.5rem !important;
+                border-radius: 10px !important;
+            }
+            
+            .table-header {
+                padding: 0.8rem !important;
+            }
+            
+            .table-header h3 {
+                font-size: 1.1rem;
+            }
+            
+            th, td {
+                padding: 0.8rem 0.6rem !important;
+                font-size: 0.85rem !important;
+            }
+            
+            .photo-preview {
+                width: 45px !important;
+                height: 45px !important;
+            }
+            
+            .result-container h2 {
+                font-size: 1.4rem !important;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+            
+            .btn-edit, .btn-featured, .btn-delete {
+                padding: 0.3rem 0.8rem;
+                font-size: 0.8rem;
+                width: 100%;
+            }
+            
+            .section-separator {
+                margin: 2rem auto;
+            }
+
+            .featured-limit-modal .modal-dialog {
+                margin: 1rem;
+            }
+
+            .featured-limit-modal .modal-body {
+                padding: 1.5rem;
+            }
+
+            .featured-limit-modal .warning-icon {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 0.8rem !important;
+                margin-top: 60px !important;
+            }
+            
+            .result-container {
+                padding: 1rem !important;
+                border-radius: 15px !important;
+            }
+            
+            .form-group {
+                margin-bottom: 0.9rem !important;
+            }
+            
+            table {
+                min-width: 550px;
+            }
+            
+            th, td {
+                padding: 0.7rem 0.5rem !important;
+                font-size: 0.8rem !important;
+            }
+            
+            .photo-preview {
+                width: 40px !important;
+                height: 40px !important;
+            }
+            
+            .dashboard-header h2 {
+                font-size: 1.4rem;
+            }
+            
+            .form-label {
+                font-size: 0.9rem;
+            }
+            
+            .form-control, .form-select {
+                font-size: 0.95rem;
+                padding: 9px 12px !important;
+            }
+            
+            .separator-icon {
+                width: 50px;
+                height: 50px;
+                padding: 0.6rem;
+                margin: 0 1rem;
+            }
+            
+            .separator-icon i {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Mobile Navbar -->
+    <nav class="mobile-navbar navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <span style="font-weight:800; background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); 
+                    -webkit-background-clip: text; -webkit-text-fill-color: transparent;">EXOTICA</span>
+                <span style="font-weight:300; color:var(--secondary-color); font-size: 1rem;">Admin</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobileNavbarMenu">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_dashboard' %}">
+                            <i class="fas fa-users me-2"></i>Participants
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'event_management' %}">
+                            <i class="fas fa-calendar-alt me-2"></i>Manage Events
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- FIXED: Added active class to the Upload Results link -->
+                        <a class="nav-link active" href="{% url 'upload-result' %}">
+                            <i class="fas fa-trophy me-2"></i>Upload Results
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'announcment' %}">
+                            <i class="fas fa-bullhorn me-2"></i>Announcements
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{% url 'admin_logout' %}">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Success Message Toast -->
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="success-toast" id="successToast">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle me-3" style="color: #00ff88; font-size: 1.5rem;"></i>
+                        <div>
+                            <strong style="color: #00ff88;">Success!</strong>
+                            <p class="mb-0">{{ message }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <!-- Dashboard Section -->
+     <section class="dashboard-container">
+        <!-- Desktop Sidebar (Hidden on mobile) -->
+        <div class="sidebar">
+            <a href="#" class="sidebar-brand">EXOTICA <span style="font-weight:300; color:white; font-size: 1rem;">Admin</span></a>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="{% url 'admin_dashboard' %}" class="nav-link">
+                        <i class="fas fa-users"></i> Participants
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'event_management' %}" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i> Manage Events
+                    </a>
+                </li>
+                <li>
+                    <!-- FIXED: Added active class to the Upload Results link -->
+                    <a href="{% url 'upload-result' %}" class="nav-link active">
+                        <i class="fas fa-trophy"></i> Upload Results
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'announcment' %}" class="nav-link">
+                        <i class="fas fa-bullhorn"></i> Announcements
+                    </a>
+                </li>
+            </ul>
+            <div style="margin-top: auto; padding-top: 2rem;">
+                <a href="{% url 'admin_logout' %}" class="nav-link text-danger"
+                    style="border: 1px solid rgba(255,0,0,0.3); text-align: center;">
+                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header">
+                <div>
+                    <h2>Upload Results</h2>
+                    <p class="text-muted mb-0">Manage competition results and winners</p>
+                </div>
+            </div>
+
+            <!-- Upload Form -->
+            <div class="result-container">
+                <form method="post" enctype="multipart/form-data" id="resultForm">
+                    {% csrf_token %}
+                    <h2>{% if result %}Edit Result{% else %}Upload Result{% endif %}</h2>
+                    
+                    <!-- HIDDEN FIELD FOR RESULT_ID (CRITICAL FIX) -->
+                    {% if result %}
+                    <input type="hidden" name="result_id" value="{{ result.id }}">
+                    {% endif %}
+                    
+                    <div class="form-group">
+                        <label for="winner" class="form-label">Winner Name</label>
+                        <input type="text" id="winner" name="Winner" class="form-control" 
+                               placeholder="Enter winner's full name" required
+                               value="{% if result %}{{ result.winner }}{% endif %}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="event" class="form-label">Event</label>
+                        <input type="text" id="event" name="event" class="form-control" 
+                               placeholder="Enter event name" required
+                               value="{% if result %}{{ result.game }}{% endif %}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="branch" class="form-label">Branch</label>
+                        <input type="text" id="branch" name="Branch" class="form-control" 
+                               placeholder="Enter branch/department" required
+                               value="{% if result %}{{ result.branch }}{% endif %}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="position" class="form-label">Position</label>
+                        <select id="position" name="position" class="form-select" required>
+                            <option value="" disabled {% if not result %}selected{% endif %}>Select position</option>
+                            <option value="1st" {% if result and result.position == "1st" %}selected{% endif %}>🥇 1st Place</option>
+                            <option value="2nd" {% if result and result.position == "2nd" %}selected{% endif %}>🥈 2nd Place</option>
+                            <option value="3rd" {% if result and result.position == "3rd" %}selected{% endif %}>🥉 3rd Place</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Featured checkbox -->
+                    <div class="form-group">
+                        <label for="featured" class="form-label">Featured on Home Page</label>
+                        <div class="form-check">
+                            <input type="checkbox" id="featured" name="featured" class="form-check-input" 
+                                   {% if result and result.featured %}checked{% endif %}>
+                            <label for="featured" class="form-check-label">
+                                Show this winner on home page
+                            </label>
+                        </div>
+                        <small class="text-muted" style="display: block; margin-top: 5px;">
+                            Only 3 featured winners will be displayed on the home page
+                            {% if featured_count >= 3 %}
+                            <br><strong class="text-warning">⚠️ Featured limit reached!</strong>
+                            {% endif %}
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="image" class="form-label">Winner Photo</label>
+                        <div class="file-input-container">
+                            <input type="file" id="image" name="Image" class="form-control" accept="image/*" {% if not result %}required{% endif %}>
+                            <label for="image" class="file-input-label">
+                                <i class="fas fa-camera me-2"></i>{% if result %}Change Photo{% else %}Choose File{% endif %}
+                            </label>
+                            <span class="file-name" id="fileName">
+                                {% if result and result.photo %}{{ result.photo.name|slice:"8:" }}{% else %}No file chosen{% endif %}
+                            </span>
+                        </div>
+                        <small class="text-muted" style="display: block; margin-top: 5px;">
+                            {% if result %}Leave empty to keep current photo{% else %}Upload a clear photo of the winner (JPG, PNG){% endif %}
+                        </small>
+                        
+                        {% if result and result.photo %}
+                        <div class="current-photo">
+                            <small class="text-muted">Current Photo:</small><br>
+                            <img src="{{ result.photo.url }}" alt="Current photo">
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" name="upload_result" class="btn-submit" id="submitBtn">
+                        <i class="fas fa-upload me-2"></i> {% if result %}Update Result{% else %}Upload Result{% endif %}
+                    </button>
+                    
+                    {% if result %}
+                    <a href="{% url 'upload-result' %}" style="display: block; text-align: center; margin-top: 10px; color: var(--secondary-color); text-decoration: none;">
+                        <i class="fas fa-times me-2"></i> Cancel Edit
+                    </a>
+                    {% endif %}
+                </form>
+            </div>
+
+            <!-- Section Separator -->
+            <div class="section-separator">
+                <div class="separator-line"></div>
+                <div class="separator-icon">
+                    <i class="fas fa-list-alt"></i>
+                </div>
+                <div class="separator-line"></div>
+            </div>
+            <div class="section-title">All Uploaded Results</div>
+
+            <!-- Warning message about featured limit -->
+            <div class="featured-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>Note:</strong> Only 3 featured winners will appear on the home page. You currently have 
+                <strong>{{ featured_count|default:"0" }} featured</strong> winner(s).
+            </div>
+
+            <!-- Results Table -->
+            <div class="results-table">
+                <div class="table-header">
+                    <h3>Recent Results</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Winner</th>
+                            <th>Branch</th>
+                            <th>Position</th>
+                            <th>Featured</th>
+                            <th>Event</th>
+                            <th>Photo</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                        <tr>
+                            <td>{{ result.winner }}</td>
+                            <td>{{ result.branch }}</td>
+                            <td>
+                                {% if result.position == "1st" %}
+                                    <span class="position-badge position-1st">🥇 1st</span>
+                                {% elif result.position == "2nd" %}
+                                    <span class="position-badge position-2nd">🥈 2nd</span>
+                                {% elif result.position == "3rd" %}
+                                    <span class="position-badge position-3rd">🥉 3rd</span>
+                                {% else %}
+                                    <span class="position-badge">{{ result.position }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if result.featured %}
+                                    <span class="featured-badge">
+                                        <i class="fas fa-star"></i> Featured
+                                    </span>
+                                {% else %}
+                                    <span class="normal-badge">
+                                        Normal
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>{{ result.game }}</td>
+                            <td>
+                                {% if result.photo %}
+                                    <img src="{{ result.photo.url }}" alt="{{ result.winner }} photo" class="photo-preview">
+                                {% else %}
+                                    <span class="no-image">No Image</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{% url 'edit-result' result.id %}" class="btn-edit">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    
+                                    <!-- Toggle Featured Button -->
+                                    {% if result.featured %}
+                                    <form method="post" action="{% url 'toggle-featured' result.id %}" class="toggle-featured-form" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-featured">
+                                            <i class="fas fa-star"></i> Unfeature
+                                        </button>
+                                    </form>
+                                    {% else %}
+                                    <form method="post" action="{% url 'toggle-featured' result.id %}" class="toggle-featured-form" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-edit">
+                                            <i class="fas fa-star"></i> Feature
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                    
+                                    <button type="button" class="btn-delete" onclick="confirmDelete({{ result.id }}, '{{ result.winner }}')">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 2rem;">
+                                <i class="fas fa-trophy fa-2x mb-3" style="color: var(--glass-border);"></i>
+                                <p style="color: #ffffff;">No results uploaded yet. Upload your first result above!</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the result for <strong id="deleteWinnerName"></strong>?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Limit Modal -->
+    <div class="modal fade featured-limit-modal" id="featuredLimitModal" tabindex="-1" aria-labelledby="featuredLimitModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="featuredLimitModalLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Featured Limit Reached!
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <div class="warning-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="text-warning mb-3">Only 3 Winners Can Be Featured!</h3>
+                        <p class="mb-4">You have reached the maximum limit of 3 featured winners on the home page.</p>
+                        <div class="alert alert-warning" style="background: rgba(255, 215, 0, 0.1); border-color: #ffd700;">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Solution:</strong> To feature this winner, you must first unfeature one of the current featured winners below.
+                        </div>
+                    </div>
+                    
+                    <div class="current-featured-list" id="currentFeaturedList">
+                        <!-- Featured winners will be dynamically inserted here -->
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <p class="text-muted mb-3">Select a winner to unfeature:</p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="button" class="btn btn-warning" onclick="scrollToFeaturedSection()">
+                                <i class="fas fa-arrow-down me-2"></i>View All Featured
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JavaScript for this page -->
+    <script>
+        // File name display
+        document.getElementById('image')?.addEventListener('change', function(e) {
+            const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+            document.getElementById('fileName').textContent = fileName;
+        });
+        
+        // Delete confirmation
+        function confirmDelete(resultId, winnerName) {
+            document.getElementById('deleteWinnerName').textContent = winnerName;
+            document.getElementById('deleteForm').action = `/admin-panel/delete-result/${resultId}/`;
+            
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+        
+        // Store the form submission event
+        let pendingFormSubmission = null;
+        let pendingToggleForm = null;
+        
+        // FIXED: Check featured limit for main form submission
+        document.getElementById('resultForm')?.addEventListener('submit', function(e) {
+            const featuredCheckbox = document.getElementById('featured');
+            const featuredCount = parseInt('{{ featured_count|default:"0" }}');
+            
+            // Check if we're creating a new result or editing
+            const isEditing = '{{ result.id|default:"" }}' !== '';
+            const isCurrentlyFeatured = '{{ result.featured|default:"False" }}' === 'True';
+            
+            console.log('Form submission check:', {
+                isEditing,
+                isCurrentlyFeatured,
+                featuredCount,
+                checkboxChecked: featuredCheckbox?.checked
+            });
+            
+            // If trying to feature and already have 3 featured
+            if (featuredCheckbox && featuredCheckbox.checked) {
+                // If editing and currently not featured
+                if (isEditing && !isCurrentlyFeatured && featuredCount >= 3) {
+                    e.preventDefault();
+                    pendingFormSubmission = this;
+                    showFeaturedLimitModal();
+                    return false;
+                }
+                // If creating new and already have 3 featured
+                else if (!isEditing && featuredCount >= 3) {
+                    e.preventDefault();
+                    pendingFormSubmission = this;
+                    showFeaturedLimitModal();
+                    return false;
+                }
+            }
+        });
+        
+        // FIXED: Check featured limit for toggle buttons
+        document.querySelectorAll('.toggle-featured-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const button = this.querySelector('button[type="submit"]');
+                const isCurrentlyFeatured = button.textContent.includes('Unfeature');
+                const featuredCount = parseInt('{{ featured_count|default:"0" }}');
+                
+                console.log('Toggle form check:', {
+                    isCurrentlyFeatured,
+                    featuredCount,
+                    formAction: this.action
+                });
+                
+                // If trying to feature and already have 3 featured
+                if (!isCurrentlyFeatured && featuredCount >= 3) {
+                    e.preventDefault();
+                    pendingToggleForm = this;
+                    showFeaturedLimitModal();
+                    return false;
+                }
+                
+                // Ask confirmation for unfeaturing
+                if (isCurrentlyFeatured) {
+                    const winnerName = this.closest('tr').querySelector('td:first-child').textContent;
+                    if (!confirm(`Are you sure you want to remove "${winnerName}" from featured winners?`)) {
+                        e.preventDefault();
+                    }
+                }
+            });
+        });
+        
+        // FIXED: Also handle checkbox click when 3 already featured
+        document.getElementById('featured')?.addEventListener('click', function(e) {
+            const featuredCount = parseInt('{{ featured_count|default:"0" }}');
+            const isEditing = '{{ result.id|default:"" }}' !== '';
+            const isCurrentlyFeatured = '{{ result.featured|default:"False" }}' === 'True';
+            
+            // If checkbox is being checked (not unchecked)
+            if (this.checked) {
+                // If editing and currently not featured
+                if (isEditing && !isCurrentlyFeatured && featuredCount >= 3) {
+                    e.preventDefault();
+                    this.checked = false;
+                    showFeaturedLimitModal();
+                    return false;
+                }
+                // If creating new and already have 3 featured
+                else if (!isEditing && featuredCount >= 3) {
+                    e.preventDefault();
+                    this.checked = false;
+                    showFeaturedLimitModal();
+                    return false;
+                }
+            }
+        });
+        
+        // Show featured limit modal
+        function showFeaturedLimitModal() {
+            // Populate the featured list
+            populateFeaturedList();
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('featuredLimitModal'));
+            modal.show();
+        }
+        
+        // Populate featured winners list
+        function populateFeaturedList() {
+            const listContainer = document.getElementById('currentFeaturedList');
+            if (!listContainer) return;
+            
+            // Get all featured rows from the table
+            const featuredRows = document.querySelectorAll('tbody tr');
+            let featuredWinners = [];
+            
+            featuredRows.forEach(row => {
+                const featuredBadge = row.querySelector('.featured-badge');
+                if (featuredBadge) {
+                    const winnerName = row.querySelector('td:first-child').textContent.trim();
+                    const eventName = row.querySelector('td:nth-child(5)').textContent.trim();
+                    const photoCell = row.querySelector('td:nth-child(6)');
+                    const photoSrc = photoCell.querySelector('img') ? photoCell.querySelector('img').src : '';
+                    const toggleForm = row.querySelector('.toggle-featured-form');
+                    const resultId = toggleForm ? toggleForm.action.split('/').filter(Boolean).pop().replace('/', '') : null;
+                    
+                    featuredWinners.push({
+                        name: winnerName,
+                        event: eventName,
+                        photo: photoSrc,
+                        id: resultId
+                    });
+                }
+            });
+            
+            // Populate the list
+            listContainer.innerHTML = '';
+            if (featuredWinners.length > 0) {
+                featuredWinners.forEach(winner => {
+                    const winnerItem = `
+                    <div class="featured-item" data-result-id="${winner.id}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="winner-info">
+                                ${winner.photo ? `<img src="${winner.photo}" alt="${winner.name}" class="winner-photo">` : 
+                                  '<div class="winner-photo d-flex align-items-center justify-content-center" style="background: rgba(255,215,0,0.1);"><i class="fas fa-user text-warning"></i></div>'}
+                                <div class="winner-details">
+                                    <div class="winner-name">${winner.name}</div>
+                                    <div class="winner-event">${winner.event}</div>
+                                </div>
+                            </div>
+                            <button type="button" class="unfeature-btn" onclick="unfeatureWinner(${winner.id}, '${winner.name.replace(/'/g, "\\'")}')">
+                                <i class="fas fa-star me-1"></i> Unfeature
+                            </button>
+                        </div>
+                    </div>
+                    `;
+                    listContainer.insertAdjacentHTML('beforeend', winnerItem);
+                });
+            } else {
+                listContainer.innerHTML = `
+                <div class="text-center py-4">
+                    <i class="fas fa-star fa-3x mb-3 text-muted"></i>
+                    <p class="text-muted">No featured winners found</p>
+                </div>
+                `;
+            }
+        }
+        
+        // FIXED: Unfeature a winner from the modal - SIMPLIFIED VERSION
+        function unfeatureWinner(resultId, winnerName) {
+            if (confirm(`Are you sure you want to unfeature "${winnerName}"?`)) {
+                // Find the form for this winner
+                const forms = document.querySelectorAll('.toggle-featured-form');
+                let targetForm = null;
+                
+                forms.forEach(form => {
+                    const formResultId = form.action.split('/').filter(Boolean).pop().replace('/', '');
+                    if (parseInt(formResultId) === parseInt(resultId)) {
+                        targetForm = form;
+                    }
+                });
+                
+                if (targetForm) {
+                    // Create a hidden form to submit
+                    const hiddenForm = document.createElement('form');
+                    hiddenForm.method = 'POST';
+                    hiddenForm.action = targetForm.action;
+                    hiddenForm.style.display = 'none';
+                    
+                    // Add CSRF token
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = 'csrfmiddlewaretoken';
+                    csrfInput.value = csrfToken;
+                    hiddenForm.appendChild(csrfInput);
+                    
+                    // Add to body and submit
+                    document.body.appendChild(hiddenForm);
+                    
+                    // Show loading state
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('featuredLimitModal'));
+                    if (modal) modal.hide();
+                    
+                    // Show processing message
+                    alert(`⏳ Unfeaturing "${winnerName}"...`);
+                    
+                    // Submit the form
+                    hiddenForm.submit();
+                } else {
+                    alert('❌ Could not find the form to unfeature this winner.');
+                }
+            }
+        }
+        
+        // Scroll to featured section
+        function scrollToFeaturedSection() {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('featuredLimitModal'));
+            modal.hide();
+            
+            setTimeout(() => {
+                const warningSection = document.querySelector('.featured-warning');
+                if (warningSection) {
+                    warningSection.scrollIntoView({ behavior: 'smooth' });
+                    warningSection.style.animation = 'none';
+                    void warningSection.offsetWidth; // Trigger reflow
+                    warningSection.style.background = 'rgba(255, 100, 0, 0.2)';
+                    warningSection.style.borderColor = '#ff6400';
+                    setTimeout(() => {
+                        warningSection.style.background = '';
+                        warningSection.style.borderColor = '';
+                    }, 2000);
+                }
+            }, 300);
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded successfully');
+            console.log('Featured count:', '{{ featured_count|default:"0" }}');
+            
+            // Enable/disable featured checkbox based on count
+            const featuredCheckbox = document.getElementById('featured');
+            const featuredCount = parseInt('{{ featured_count|default:"0" }}');
+            
+            if (featuredCheckbox) {
+                const isEditing = '{{ result.id|default:"" }}' !== '';
+                const isCurrentlyFeatured = '{{ result.featured|default:"False" }}' === 'True';
+                
+                // Only disable if creating new and already have 3 featured
+                if (!isEditing && featuredCount >= 3) {
+                    featuredCheckbox.disabled = true;
+                }
+                // If editing and currently not featured and already have 3 featured
+                else if (isEditing && !isCurrentlyFeatured && featuredCount >= 3) {
+                    featuredCheckbox.disabled = false;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

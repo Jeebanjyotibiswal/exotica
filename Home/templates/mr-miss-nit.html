@@ -1,0 +1,713 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. & Miss NIT | EXOTICA – NIT</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #ff0055;
+            --secondary-color: #00d4ff;
+            --dark-bg: #0a0a0a;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-light: #f0f0f0;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            padding-top: 70px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .btn-glow {
+            background: linear-gradient(45deg, var(--primary-color), #ff4d88);
+            color: white;
+            padding: 10px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            height: 80vh;
+            min-height: 600px;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            background: linear-gradient(45deg, #fff, var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Content Sections */
+        .section-title {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .info-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            height: 100%;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .info-card:hover::before {
+            left: 100%;
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 30px rgba(255, 0, 85, 0.1);
+        }
+
+        .criteria-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .criteria-list li {
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .criteria-list li:hover {
+            background: rgba(255, 255, 255, 0.05);
+            padding-left: 1rem;
+        }
+
+        .criteria-list i {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            min-width: 24px;
+        }
+
+        /* Past Winners - Refined Image Styling */
+        .winners-section {
+            padding: 100px 0;
+            background: linear-gradient(to bottom, var(--dark-bg), rgba(10, 10, 10, 0.9));
+            position: relative;
+        }
+
+        .winners-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+
+        .winner-container {
+            position: relative;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            border-radius: 20px;
+            transition: all 0.5s ease;
+        }
+
+        .winner-img-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            height: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .winner-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+            filter: brightness(0.9);
+        }
+
+        .winner-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            padding: 2rem;
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+        }
+
+        .winner-container:hover .winner-overlay {
+            transform: translateY(0);
+        }
+
+        .winner-container:hover .winner-img {
+            transform: scale(1.1);
+            filter: brightness(1);
+        }
+
+        .winner-crown {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: gold;
+            font-size: 2.5rem;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.5s ease;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .winner-container:hover .winner-crown {
+            opacity: 1;
+            transform: translateY(0);
+            animation: crownGlow 2s infinite;
+        }
+
+        @keyframes crownGlow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .winner-year {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 2;
+        }
+
+        .winner-caption {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding: 1rem;
+        }
+
+        .winner-caption h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+            transition: color 0.3s ease;
+        }
+
+        .winner-container:hover .winner-caption h3 {
+            color: var(--secondary-color);
+        }
+
+        .winner-caption p {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            background: #050505;
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--glass-border);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            color: var(--text-light);
+            margin: 0 8px;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 0, 85, 0.2);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .winner-img-wrapper {
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .winner-img-wrapper {
+                height: 300px;
+            }
+            
+            .winner-caption h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .info-card {
+                padding: 1.8rem;
+            }
+            
+            .winner-img-wrapper {
+                height: 250px;
+            }
+            
+            .nav-link {
+                margin-left: 0;
+                padding: 0.5rem 0;
+            }
+        }
+
+        /* Floating animation for visual interest */
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Gradient text utility */
+        .gradient-text {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">EXOTICA <span style="color: var(--text-light); font-weight: 300;">| NIT</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'notices' %}">Notice</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'mr-miss-nit' %}">Mr. & Miss NIT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_login' %}">Admin</a></li>
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <a class="btn-glow" href="{% url 'register' %}">Register Now</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="hero-title">The Crown Awaits</h1>
+                    <p class="hero-subtitle">Where elegance meets intellect. The ultimate quest for the face of NIT begins here.</p>
+                    <a href="{% url 'register' %}" class="btn-glow" style="padding: 15px 50px; font-size: 1.2rem; animation: fadeInUp 1s ease 0.4s both;">Register Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Details Section -->
+    <section class="container py-5 mt-5">
+        <div class="row g-5">
+            <div class="col-lg-6">
+                <div class="info-card float-animation">
+                    <h2 class="mb-4 gradient-text">Event Description</h2>
+                    <p class="mb-4" style="color: var(--text-light); opacity: 0.9; line-height: 1.8;">
+                        Mr. & Miss NIT transcends beyond a conventional beauty pageant - it's a platform that celebrates personality, intelligence, and charisma. This prestigious competition brings together the most talented individuals from our institute to showcase their unique qualities.
+                    </p>
+                    <p style="color: var(--text-light); opacity: 0.9; line-height: 1.8;">
+                        Contestants will navigate through multiple challenging rounds including professional ramp walks, creative talent showcases, and thought-provoking Q&A sessions. The competition is designed to test not just appearance, but confidence, communication skills, and overall persona.
+                    </p>
+                    <div class="mt-4 pt-3" style="border-top: 1px solid var(--glass-border);">
+                        <p class="mb-0" style="color: var(--secondary-color); font-weight: 600;">
+                            <i class="fas fa-trophy me-2"></i>Do you have what it takes to represent the spirit of NIT?
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <h2 class="mb-4 gradient-text">Judging Criteria</h2>
+                    <ul class="criteria-list">
+                        <li>
+                            <i class="fas fa-star"></i>
+                            <div>
+                                <strong style="color: var(--text-light);">Confidence & Stage Presence</strong>
+                                <p style="margin: 5px 0 0; color: var(--text-light); opacity: 0.8; font-size: 0.95rem;">Command of the stage and overall confidence</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-tshirt"></i>
+                            <div>
+                                <strong style="color: var(--text-light);">Attire & Grooming</strong>
+                                <p style="margin: 5px 0 0; color: var(--text-light); opacity: 0.8; font-size: 0.95rem;">Style, presentation, and attention to detail</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-microphone"></i>
+                            <div>
+                                <strong style="color: var(--text-light);">Communication Skills</strong>
+                                <p style="margin: 5px 0 0; color: var(--text-light); opacity: 0.8; font-size: 0.95rem;">Articulation and clarity of expression</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <strong style="color: var(--text-light);">Talent & Creativity</strong>
+                                <p style="margin: 5px 0 0; color: var(--text-light); opacity: 0.8; font-size: 0.95rem;">Originality and skill in talent presentation</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-brain"></i>
+                            <div>
+                                <strong style="color: var(--text-light);">Intelligence & Wit</strong>
+                                <p style="margin: 5px 0 0; color: var(--text-light); opacity: 0.8; font-size: 0.95rem;">Quick thinking and intelligent responses</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Past Winners -->
+    <section class="winners-section">
+        <div class="container">
+            <h2 class="section-title gradient-text">Our Royalty</h2>
+            <p class="text-center mb-5" style="color: var(--text-light); opacity: 0.8; max-width: 700px; margin: 0 auto 3rem;">
+                Meet the reigning champions who have set the benchmark for excellence and grace.
+            </p>
+            
+            <div class="row g-5 justify-content-center">
+                <div class="col-lg-5 col-md-6">
+                    <div class="winner-container">
+                        <div class="winner-img-wrapper">
+                            <span class="winner-year">2024</span>
+                            <img src="{% static 'home/mr_nit.jpg' %}" alt="Mr. NIT 2024" class="winner-img" 
+                                 onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                            <div class="winner-overlay">
+                                <h4 style="color: white; margin: 0;">Grace & Intelligence</h4>
+                                <p style="color: var(--secondary-color); margin: 5px 0 0;">Mechanical Department</p>
+                            </div>
+                            <i class="fas fa-crown winner-crown"></i>
+                        </div>
+                        <div class="winner-caption">
+                            <h3>Mr Tapan Kumar</h3>
+                            <p>Mr. NIT 2k24</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-6">
+                    <div class="winner-container">
+                        <div class="winner-img-wrapper">
+                            <span class="winner-year">2025</span>
+                            <img src="{% static 'home/mrs_nit.jpg' %}"
+                                 alt="Miss NIT 2024" class="winner-img">
+                            <div class="winner-overlay">
+                                <h4 style="color: white; margin: 0;">Grace & Intelligence</h4>
+                                <p style="color: var(--secondary-color); margin: 5px 0 0;">CSE Department</p>
+                            </div>
+                            <i class="fas fa-crown winner-crown"></i>
+                        </div>
+                        <div class="winner-caption">
+                            <h3>Arpita Behera</h3>
+                            <p>Miss.NIT 2k25</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5 pt-4">
+                <a href="{% url 'register' %}" class="btn-glow" style="padding: 15px 50px; font-size: 1.2rem;">
+                    <i class="fas fa-gem me-2"></i>Claim Your Crown
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h4 class="mb-4" style="font-family: 'Playfair Display', serif; font-size: 2.2rem;">EXOTICA – NIT</h4>
+                    <p class="mb-4" style="color: var(--text-light); opacity: 0.8; max-width: 600px; margin: 0 auto;">
+                        The biggest annual cultural fest of Nalanda Institute of Technology, where creativity meets celebration.
+                    </p>
+                    <div class="mb-4">
+                        <a href="https://www.facebook.com/nalandabhubaneswar/" class="social-icon" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/nalandabbsr?igsh=MTFyeWFwdGoxYnVrNA==" class="social-icon" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://x.com/NALANDABHUBANE1" class="social-icon" target="_blank">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="http://www.youtube.com/@nalandabhubaneswar4971" class="social-icon" target="_blank">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                    <p class="small mb-2" style="color: var(--text-light); opacity: 0.7;">
+                        <i class="fas fa-map-marker-alt me-2"></i>Nalanda Institute of Technology, Bhubaneswar
+                    </p>
+                    <p class="small mb-0" style="color: var(--text-light); opacity: 0.7;">
+                        &copy; 2025 EXOTICA NIT. All Rights Reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Smooth scrolling -->
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(10, 10, 10, 0.98)';
+                navbar.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.2)';
+            } else {
+                navbar.style.background = 'rgba(10, 10, 10, 0.95)';
+                navbar.style.boxShadow = 'none';
+            }
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.info-card, .winner-container').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>

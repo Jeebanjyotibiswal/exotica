@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participants Management | EXOTICA Admin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <style>
+        :root {
+            --primary-color: #ff0055;
+            --secondary-color: #00d4ff;
+            --accent-color: #ccff00;
+            --dark-bg: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: #ffffff;
+            --neon-glow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+        }
+        body {
+            background: linear-gradient(-45deg, #0a0a0a, #1a0b2e, #001f3f, #0a0a0a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        h1, h2, h3, h4 { 
+            font-family: 'Playfair Display', serif; 
+            color: #ffffff !important;
+        }
+        
+        /* Mobile Navbar - Hidden by default, shown only on mobile */
+        .mobile-navbar {
+            display: none;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            padding: 1rem;
+        }
+        
+        /* Desktop Sidebar */
+        .dashboard-container { display: block; min-height: 100vh; }
+        .sidebar { 
+            background: rgba(10, 10, 10, 0.95); 
+            backdrop-filter: blur(20px); 
+            border-right: 1px solid var(--glass-border); 
+            height: 100vh; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 260px; 
+            padding: 2rem 1rem; 
+            z-index: 1000; 
+            box-shadow: 5px 0 30px rgba(0, 0, 0, 0.3); 
+        }
+        .sidebar-brand { 
+            font-size: 1.8rem; 
+            font-weight: 800; 
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            text-decoration: none; 
+            display: block; 
+            margin-bottom: 3rem; 
+            text-align: center; 
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.3); 
+        }
+        .nav-pills .nav-link { 
+            color: #ffffff; 
+            border-radius: 12px; 
+            margin-bottom: 0.8rem; 
+            text-align: left; 
+            padding: 12px 20px; 
+            transition: all 0.3s ease; 
+            border: 1px solid transparent; 
+        }
+        .nav-pills .nav-link.active { 
+            background: rgba(255, 0, 85, 0.2); 
+            color: #ffffff; 
+            border: 1px solid var(--primary-color); 
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3); 
+        }
+        .nav-pills .nav-link:hover:not(.active) { 
+            background: rgba(255, 255, 255, 0.15); 
+            color: #ffffff; 
+            transform: translateX(5px); 
+        }
+        .nav-pills i { width: 25px; margin-right: 10px; }
+        
+        .main-content { 
+            margin-left: 260px; 
+            padding: 2rem; 
+            min-height: 100vh;
+        }
+        
+        .admin-card { 
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 20px; 
+            padding: 2rem; 
+            margin-bottom: 2rem; 
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2); 
+            transition: transform 0.3s; 
+        }
+        .admin-card:hover { 
+            transform: translateY(-5px); 
+            border-color: var(--secondary-color); 
+        }
+        
+        /* Button Styles */
+        .btn-primary { 
+            background: var(--secondary-color); 
+            border: none; 
+            color: #000000 !important; 
+            font-weight: 600;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); 
+        }
+        .btn-primary:hover { 
+            background: #00c4eb; 
+            color: #000000 !important;
+        }
+        .btn-success { 
+            background: #00ff88; 
+            border: none; 
+            color: #000000 !important; 
+            font-weight: 600; 
+        }
+        .btn-danger {
+            background: #ff0055;
+            border: none;
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+        .btn-warning {
+            background: #ffcc00;
+            border: none;
+            color: #000000 !important;
+            font-weight: 600;
+        }
+        .btn-outline-secondary {
+            color: #ffffff !important;
+            border-color: var(--glass-border);
+        }
+        .btn-outline-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff !important;
+            border-color: var(--secondary-color);
+        }
+        .btn-outline-info, .btn-outline-danger {
+            color: #ffffff !important;
+        }
+        
+        /* Search Box */
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            color: #ffffff !important;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .search-box:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+            color: #ffffff !important;
+            outline: none;
+        }
+        
+        /* Table Container - FIXED VISIBILITY */
+        .table-container {
+            background: rgba(30, 30, 40, 0.8);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid var(--glass-border);
+            overflow-x: auto;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Table Styles - FIXED VISIBILITY */
+        .table {
+            color: #ffffff !important;
+            margin-bottom: 0;
+            font-size: 0.95rem;
+            background: transparent !important;
+        }
+        .table thead th {
+            border-bottom: 2px solid var(--secondary-color);
+            background: rgba(0, 212, 255, 0.2);
+            font-weight: 700;
+            padding: 1.2rem 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            color: #ffffff !important;
+        }
+        .table tbody td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 1rem;
+            vertical-align: middle;
+            font-weight: 400;
+            color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        /* FIX: First column in table body */
+        .table tbody th {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 1rem;
+            vertical-align: middle;
+            font-weight: 400;
+            color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .table tbody tr:hover {
+            background: rgba(0, 212, 255, 0.15) !important;
+        }
+        .table tbody tr:hover th {
+            background: rgba(0, 212, 255, 0.15) !important;
+        }
+        
+        /* Striped table rows with better visibility */
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        .table-striped tbody tr:nth-of-type(odd) th {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: rgba(255, 255, 255, 0.07);
+        }
+        .table-striped tbody tr:nth-of-type(even) th {
+            background-color: rgba(255, 255, 255, 0.07);
+        }
+        
+        /* Badge Styles */
+        .badge-pill {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            backdrop-filter: blur(10px);
+        }
+        .badge-branch {
+            background: rgba(255, 0, 85, 0.25);
+            color: #ffffff;
+            border: 1px solid rgba(255, 0, 85, 0.4);
+        }
+        .badge-event {
+            background: rgba(0, 212, 255, 0.25);
+            color: #ffffff;
+            border: 1px solid rgba(0, 212, 255, 0.4);
+        }
+        
+        /* Pagination */
+        .pagination .page-link {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: #ffffff !important;
+        }
+        .pagination .page-item.active .page-link {
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: #000000 !important;
+            font-weight: 600;
+        }
+        .pagination .page-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff !important;
+        }
+        
+        /* Modal Styles */
+        .modal-content {
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            color: #ffffff;
+        }
+        .modal-header {
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        /* Form Controls - FIXED DROPDOWN OPTIONS */
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: #ffffff !important;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+        }
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+            color: #ffffff !important;
+        }
+        
+        /* FIX: Dropdown options styling */
+        .form-control option {
+            background: rgba(20, 20, 30, 0.95) !important;
+            color: #ffffff !important;
+            padding: 10px;
+        }
+        select.form-control option {
+            background: rgba(20, 20, 30, 0.95) !important;
+            color: #ffffff !important;
+        }
+        select.form-control option:hover,
+        select.form-control option:focus,
+        select.form-control option:checked {
+            background: rgba(0, 212, 255, 0.3) !important;
+            color: #ffffff !important;
+        }
+        
+        .form-label {
+            color: #ffffff !important;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        /* Stats Cards */
+        .stats-card {
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            transition: all 0.3s;
+            height: 100%;
+        }
+        .stats-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary-color);
+        }
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .stats-label {
+            color: #ffffff !important;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Filter Select */
+        .filter-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: #ffffff !important;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+        .filter-select option {
+            background: rgba(20, 20, 30, 0.95);
+            color: #ffffff;
+            padding: 10px;
+        }
+        
+        /* Action Buttons */
+        .action-buttons .btn {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            margin: 0 0.2rem;
+        }
+        
+        /* DataTables Custom Styling */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_paginate {
+            color: #ffffff !important;
+        }
+        
+        /* Fix DataTables length dropdown - FIXED SIZE */
+        .dataTables_wrapper .dataTables_length select {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid var(--glass-border) !important;
+            color: white !important;
+            border-radius: 8px !important;
+            padding: 0.4rem 0.8rem !important;
+            font-size: 0.9rem !important;
+            height: auto !important;
+            min-height: 38px !important;
+            width: auto !important;
+            max-width: 120px !important;
+        }
+        
+        /* Hide default DataTables search */
+        .dataTables_wrapper .dataTables_filter {
+            display: none !important;
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00c4eb;
+        }
+        
+        /* Custom Styles */
+        .data-highlight {
+            color: #ffffff !important;
+            font-weight: 500;
+        }
+        
+        .filter-container {
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--glass-border);
+        }
+        .filter-container h5 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .input-group-text {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: var(--secondary-color) !important;
+            border-right: none;
+        }
+        
+        /* Form Control Placeholder */
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Badge Styling */
+        .badge {
+            font-weight: 600;
+            padding: 0.4em 0.8em;
+        }
+        
+        /* Text Visibility */
+        .text-visible {
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        /* Export Button Container */
+        .export-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* No Data Message */
+        .no-data {
+            color: #ffffff !important;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 1200px) {
+            .main-content {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            /* Show mobile navbar, hide desktop sidebar */
+            .mobile-navbar {
+                display: block !important;
+            }
+            .sidebar {
+                display: none !important;
+            }
+            .main-content {
+                margin-left: 0 !important;
+                padding: 1rem !important;
+                margin-top: 70px !important; /* For mobile navbar */
+            }
+            
+            /* Adjust DataTables for mobile */
+            .dataTables_wrapper .dataTables_length {
+                margin-bottom: 10px !important;
+            }
+            .dataTables_wrapper .dataTables_length select {
+                max-width: 100px !important;
+                padding: 0.3rem 0.6rem !important;
+                font-size: 0.85rem !important;
+            }
+            
+            .table thead th {
+                padding: 0.8rem 0.6rem;
+                font-size: 0.85rem;
+            }
+            .table tbody td {
+                padding: 0.8rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            .table tbody th {
+                padding: 0.8rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            .stats-number {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .admin-card {
+                padding: 1.5rem;
+            }
+            .table-container {
+                padding: 1rem;
+            }
+            .table thead th {
+                padding: 0.7rem 0.5rem;
+                font-size: 0.8rem;
+            }
+            .table tbody td {
+                padding: 0.7rem 0.5rem;
+                font-size: 0.85rem;
+            }
+            .table tbody th {
+                padding: 0.7rem 0.5rem;
+                font-size: 0.85rem;
+            }
+            .stats-card {
+                padding: 1.2rem;
+            }
+            .stats-number {
+                font-size: 1.8rem;
+            }
+            .btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.9rem;
+            }
+            .search-box, .filter-select {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 0.8rem !important;
+                margin-top: 60px !important;
+            }
+            .admin-card {
+                padding: 1rem;
+                border-radius: 15px;
+            }
+            .table-container {
+                padding: 0.8rem;
+            }
+            .table thead th {
+                padding: 0.6rem 0.4rem;
+                font-size: 0.75rem;
+            }
+            .table tbody td {
+                padding: 0.6rem 0.4rem;
+                font-size: 0.8rem;
+            }
+            .table tbody th {
+                padding: 0.6rem 0.4rem;
+                font-size: 0.8rem;
+            }
+            .badge-pill {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.75rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            .stats-number {
+                font-size: 1.5rem;
+            }
+            .stats-label {
+                font-size: 0.8rem;
+            }
+            
+            /* Further reduce DataTables length dropdown */
+            .dataTables_wrapper .dataTables_length select {
+                max-width: 80px !important;
+                padding: 0.2rem 0.4rem !important;
+                font-size: 0.8rem !important;
+            }
+        }
+        
+        /* Table responsiveness for very small screens */
+        @media (max-width: 480px) {
+            .table {
+                font-size: 0.8rem;
+            }
+            .table thead th {
+                padding: 0.5rem 0.3rem;
+                font-size: 0.7rem;
+            }
+            .table tbody td {
+                padding: 0.5rem 0.3rem;
+                font-size: 0.75rem;
+            }
+            .table tbody th {
+                padding: 0.5rem 0.3rem;
+                font-size: 0.75rem;
+            }
+            .action-buttons .btn {
+                padding: 0.3rem 0.5rem;
+                font-size: 0.75rem;
+                margin: 0.1rem;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            .mobile-navbar, .sidebar, .btn, .action-buttons, .search-box, .filter-select {
+                display: none !important;
+            }
+            .main-content {
+                margin-left: 0 !important;
+                padding: 0 !important;
+                margin-top: 0 !important;
+            }
+            .table {
+                color: black !important;
+                font-size: 12pt !important;
+            }
+            .table thead th {
+                background: #f0f0f0 !important;
+                color: black !important;
+                border-color: #ccc !important;
+            }
+            .table tbody td {
+                border-color: #eee !important;
+            }
+            .table tbody th {
+                border-color: #eee !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Navbar (Hidden on desktop, shown on mobile) -->
+    <nav class="mobile-navbar navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <span style="font-weight:800; background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); 
+                    -webkit-background-clip: text; -webkit-text-fill-color: transparent;">EXOTICA</span>
+                <span style="font-weight:300; color:var(--secondary-color); font-size: 1rem;">Admin</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobileNavbarMenu">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">
+                            <i class="fas fa-users me-2"></i>Participants
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-calendar-alt me-2"></i>Manage Events
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'upload-result' %}">
+                            <i class="fas fa-trophy me-2"></i>Upload Results
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-bullhorn me-2"></i>Announcements
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{% url 'admin_logout' %}">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard-container">
+        <!-- Desktop Sidebar (Hidden on mobile) -->
+        <div class="sidebar">
+            <a href="#" class="sidebar-brand">EXOTICA <span style="font-weight:300; color:white; font-size: 1rem;">Admin</span></a>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="fas fa-users"></i> Participants
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'event_management' %}" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i> Manage Events
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'upload-result' %}" class="nav-link">
+                        <i class="fas fa-trophy"></i> Upload Results
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'announcment' %}" class="nav-link">
+                        <i class="fas fa-bullhorn"></i> Announcements
+                    </a>
+                </li>
+            </ul>
+            <div style="margin-top: auto; padding-top: 2rem;">
+                <a href="{% url 'admin_logout' %}" class="nav-link text-danger"
+                    style="border: 1px solid rgba(255,0,0,0.3); text-align: center;">
+                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Page Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+                <h2 class="mb-0 text-visible"><i class="fas fa-users me-2"></i>Participants Management</h2>
+                <button class="btn btn-primary mt-2 mt-md-0" data-bs-toggle="modal" data-bs-target="#addParticipantModal">
+                    <i class="fas fa-plus me-2"></i>Add New Participant
+                </button>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="stats-card">
+                        <div class="stats-number" id="totalParticipants">{% if all_data %}{{ all_data|length }}{% else %}0{% endif %}</div>
+                        <div class="stats-label">Total Participants</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="stats-card">
+                        <div class="stats-number" id="uniqueBranches">
+                            {% if all_data %}
+                                {% with branches=all_data|dictsort:"branch" %}
+                                    {{ branches|slice:":1"|length }}
+                                {% endwith %}
+                            {% else %}0{% endif %}
+                        </div>
+                        <div class="stats-label">Unique Branches</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="stats-card">
+                        <div class="stats-number" id="totalEvents">
+                            {% if all_data %}
+                                {% with events=all_data|dictsort:"event" %}
+                                    {{ events|slice:":1"|length }}
+                                {% endwith %}
+                            {% else %}0{% endif %}
+                        </div>
+                        <div class="stats-label">Total Events</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="stats-card">
+                        <div class="stats-number" id="todayRegistrations">{% if all_data %}{{ all_data|slice:":3"|length }}{% else %}0{% endif %}</div>
+                        <div class="stats-label">Recent Registrations</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search and Filter Section (Only One Search Bar) -->
+            <div class="filter-container">
+                <h5><i class="fas fa-filter me-2"></i>Filter Participants</h5>
+                <div class="row">
+                    <div class="col-lg-8 col-md-12 mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-end-0">
+                                <i class="fas fa-search text-secondary"></i>
+                            </span>
+                            <input type="text" id="searchInput" class="form-control search-box border-start-0" placeholder="Search by name, registration number, phone, email, branch, or event...">
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 mb-3">
+                        <select id="branchFilter" class="form-control filter-select">
+                            <option value="">All Branches</option>
+                            {% if all_data %}
+                                {% with branches=all_data|dictsort:"branch" %}
+                                    {% for participant in branches %}
+                                        {% ifchanged participant.branch %}
+                                            <option value="{{ participant.branch }}">{{ participant.branch }}</option>
+                                        {% endifchanged %}
+                                    {% endfor %}
+                                {% endwith %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-6 mb-3">
+                        <select id="eventFilter" class="form-control filter-select">
+                            <option value="">All Events</option>
+                            {% if all_data %}
+                                {% with events=all_data|dictsort:"event.event_name" %}
+                                    {% for participant in events %}
+                                        {% ifchanged participant.event.event_name %}
+                                            <option value="{{ participant.event.event_name }}">{{ participant.event.event_name }}</option>
+                                        {% endifchanged %}
+                                    {% endfor %}
+                                {% endwith %}
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mt-3 flex-wrap">
+                    <button class="btn btn-outline-secondary mb-2 mb-md-0" id="resetFilters">
+                        <i class="fas fa-redo me-2"></i>Reset All Filters
+                    </button>
+                    <div class="export-container">
+                        <button class="btn btn-success me-2 mb-2" id="exportFilteredBtn">
+                            <i class="fas fa-file-export me-2"></i>Export Filtered CSV
+                        </button>
+                        <button class="btn btn-warning mb-2" id="refreshBtn">
+                            <i class="fas fa-sync-alt me-2"></i>Refresh Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Participants Table -->
+            <div class="admin-card">
+                <h4 class="mb-4 text-visible"><i class="fas fa-table me-2"></i>All Participants</h4>
+                
+                <div class="table-container">
+                    <table class="table table-hover table-striped" id="participantsTable">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-visible">#</th>
+                                <th scope="col" class="text-visible">Name</th>
+                                <th scope="col" class="text-visible">Registration No</th>
+                                <th scope="col" class="text-visible">Phone No</th>
+                                <th scope="col" class="text-visible">Email</th>
+                                <th scope="col" class="text-visible">Branch</th>
+                                <th scope="col" class="text-visible">Year</th>
+                                <th scope="col" class="text-visible">Event</th>
+                                <th scope="col" class="text-visible">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if all_data %}
+                                {% for participant in all_data %}
+                                <tr>
+                                    <th scope="row" class="text-visible data-highlight">{{ forloop.counter }}</th>
+                                    <td class="text-visible data-highlight">{{ participant.name }}</td>
+                                    <td class="text-visible data-highlight">{{ participant.regd_no }}</td>
+                                    <td class="text-visible data-highlight">{{ participant.phone }}</td>
+                                    <td class="text-visible data-highlight">{{ participant.email }}</td>
+                                    <td>
+                                        <span class="badge badge-pill badge-branch text-visible">{{ participant.branch }}</span>
+                                    </td>
+                                    <td class="text-visible data-highlight">{{ participant.year }}</td>
+                                    <td>
+                                        <span class="badge badge-pill badge-event text-visible">{{ participant.event.event_name }}</span>
+                                    </td>
+                                    <td class="action-buttons">
+                                        <button class="btn btn-sm btn-outline-info edit-btn" data-id="{{ participant.id }}" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger delete-btn" data-id="{{ participant.id }}" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="9" class="text-center py-5 no-data">
+                                        <div class="py-4">
+                                            <i class="fas fa-users fa-3x mb-3" style="color: #666;"></i>
+                                            <h5 class="text-visible">No participants found</h5>
+                                            <p class="text-muted">Add new participants using the "Add New Participant" button above.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Participant Modal -->
+    <div class="modal fade" id="addParticipantModal" tabindex="-1" aria-labelledby="addParticipantModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-visible" id="addParticipantModalLabel"><i class="fas fa-user-plus me-2"></i>Add New Participant</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="addParticipantForm" method="POST" action="{% url 'add_participant' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="regd_no" class="form-label">Registration Number *</label>
+                                <input type="text" class="form-control" id="regd_no" name="regd_no" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="branch" class="form-label">Branch *</label>
+                                <select class="form-control" id="branch" name="branch" required>
+                                    <option value="">Select Branch</option>
+                                    <option value="CSE">Computer Science & Engineering (CSE)</option>
+                                    <option value="EE">Electrical Engineering (EE)</option>
+                                    <option value="ME">Mechanical Engineering (ME)</option>
+                                    <option value="CIVIL">Civil Engineering (CIVIL)</option>
+                                    <option value="MBA">MBA</option>
+                                    <option value="MCA">MCA</option>
+                                    <option value="BBA">BBA</option>
+                                    <option value="BCA">BCA</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="year" class="form-label">Year *</label>
+                                <select class="form-control" id="year" name="year" required>
+                                    <option value="">Select Year</option>
+                                    <option value="1st Year">1st Year</option>
+                                    <option value="2nd Year">2nd Year</option>
+                                    <option value="3rd Year">3rd Year</option>
+                                    <option value="4th Year">4th Year</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="event" class="form-label">Event *</label>
+                                <select class="form-control" id="event" name="event" required>
+                                    <option value="">Select Event</option>
+                                    {% for event in events %}
+                                    <option value="{{ event.id }}">{{ event.event_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Participant</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Participant Modal -->
+    <div class="modal fade" id="editParticipantModal" tabindex="-1" aria-labelledby="editParticipantModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-visible" id="editParticipantModalLabel"><i class="fas fa-edit me-2"></i>Edit Participant</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editParticipantForm" method="POST" action="">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <input type="hidden" id="editId" name="participant_id">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editName" class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="editName" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editRegdNo" class="form-label">Registration Number *</label>
+                                <input type="text" class="form-control" id="editRegdNo" name="regd_no" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editPhone" class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-control" id="editPhone" name="phone" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editEmail" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="editEmail" name="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editBranch" class="form-label">Branch *</label>
+                                <select class="form-control" id="editBranch" name="branch" required>
+                                    <option value="">Select Branch</option>
+                                    <option value="CSE">Computer Science & Engineering (CSE)</option>
+                                    <option value="EE">Electrical Engineering (EE)</option>
+                                    <option value="ME">Mechanical Engineering (ME)</option>
+                                    <option value="CIVIL">Civil Engineering (CIVIL)</option>
+                                    <option value="MBA">MBA</option>
+                                    <option value="MCA">MCA</option>
+                                    <option value="BBA">BBA</option>
+                                    <option value="BCA">BCA</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editYear" class="form-label">Year *</label>
+                                <select class="form-control" id="editYear" name="year" required>
+                                    <option value="">Select Year</option>
+                                    <option value="1st Year">1st Year</option>
+                                    <option value="2nd Year">2nd Year</option>
+                                    <option value="3rd Year">3rd Year</option>
+                                    <option value="4th Year">4th Year</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="editEvent" class="form-label">Event *</label>
+                                <select class="form-control" id="editEvent" name="event" required>
+                                    <option value="">Select Event</option>
+                                    {% for event in events %}
+                                    <option value="{{ event.id }}">{{ event.event_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-visible" id="deleteConfirmModalLabel"><i class="fas fa-exclamation-triangle text-danger me-2"></i>Confirm Delete</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-visible">Are you sure you want to delete this participant?</p>
+                    <p class="text-warning"><strong>This action cannot be undone.</strong></p>
+                    <div id="deleteParticipantInfo" class="p-3 bg-dark rounded mt-3 text-visible"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete Participant</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery (for simpler DOM manipulation) -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    
+    <script>
+        // Initialize DataTable when document is ready
+        $(document).ready(function() {
+            // Initialize DataTable with search and pagination
+            var table = $('#participantsTable').DataTable({
+                "pageLength": 10,
+                "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                "language": {
+                    "search": "Search:",
+                    "lengthMenu": "Show _MENU_ entries",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "infoEmpty": "Showing 0 to 0 of 0 entries",
+                    "infoFiltered": "(filtered from _MAX_ total entries)",
+                    "zeroRecords": "No matching records found",
+                    "paginate": {
+                        "first": "First",
+                        "last": "Last",
+                        "next": "Next",
+                        "previous": "Previous"
+                    }
+                },
+                "dom": '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+                "responsive": true,
+                "autoWidth": false,
+                "order": [[0, 'asc']],
+                "createdRow": function(row, data, dataIndex) {
+                    // Add custom class to each row for better styling
+                    $(row).addClass('data-highlight');
+                }
+            });
+            
+            // Hide the default DataTables search input (we have our own)
+            $('.dataTables_filter').hide();
+            
+            // Fix DataTables length dropdown styling
+            $('.dataTables_length select').addClass('form-select form-select-sm');
+            
+            // Search functionality - only one search bar
+            $('#searchInput').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+            
+            // Branch filter
+            $('#branchFilter').on('change', function() {
+                var branch = $(this).val();
+                if (branch) {
+                    table.column(5).search(branch).draw();
+                } else {
+                    table.column(5).search('').draw();
+                }
+            });
+            
+            // Event filter
+            $('#eventFilter').on('change', function() {
+                var eventName = $(this).val();
+                if (eventName) {
+                    table.column(7).search(eventName).draw();
+                } else {
+                    table.column(7).search('').draw();
+                }
+            });
+            
+            // Reset filters
+            $('#resetFilters').on('click', function() {
+                $('#searchInput').val('');
+                $('#branchFilter').val('');
+                $('#eventFilter').val('');
+                table.search('').columns().search('').draw();
+            });
+            
+            // Refresh button
+            $('#refreshBtn').on('click', function() {
+                location.reload();
+            });
+            
+            // Export filtered data only - FIXED: Now properly exports filtered data using server-side
+            $('#exportFilteredBtn').on('click', function() {
+                // Get current filter values
+                var searchValue = table.search();
+                var branchValue = $('#branchFilter').val();
+                var eventValue = $('#eventFilter').val();
+                
+                // Create a form to submit filter data
+                var form = $('<form>', {
+                    'method': 'POST',
+                    'action': "{% url 'export_participants' %}",
+                    'style': 'display: none;'
+                });
+                
+                // Add CSRF token
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'csrfmiddlewaretoken',
+                    'value': $('input[name="csrfmiddlewaretoken"]').val()
+                }));
+                
+                // Add search filter
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'search',
+                    'value': searchValue
+                }));
+                
+                // Add branch filter
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'branch',
+                    'value': branchValue
+                }));
+                
+                // Add event filter
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'event',
+                    'value': eventValue
+                }));
+                
+                // Append form to body and submit
+                $('body').append(form);
+                form.submit();
+                
+                // Remove form after submission
+                setTimeout(function() {
+                    form.remove();
+                }, 100);
+            });
+            
+            // Edit participant button click
+            $(document).on('click', '.edit-btn', function() {
+                const participantId = $(this).data('id');
+                const row = $(this).closest('tr');
+                
+                // Get data from the table row
+                $('#editId').val(participantId);
+                $('#editName').val(row.find('td:nth-child(2)').text());
+                $('#editRegdNo').val(row.find('td:nth-child(3)').text());
+                $('#editPhone').val(row.find('td:nth-child(4)').text());
+                $('#editEmail').val(row.find('td:nth-child(5)').text());
+                $('#editBranch').val(row.find('td:nth-child(6) span').text().trim());
+                $('#editYear').val(row.find('td:nth-child(7)').text().trim());
+                
+                // Get event name from badge
+                const eventName = row.find('td:nth-child(8) span').text().trim();
+                // Set event in dropdown
+                $('#editEvent option').each(function() {
+                    if ($(this).text().includes(eventName)) {
+                        $(this).prop('selected', true);
+                        return false;
+                    }
+                });
+                
+                // Set the form action URL
+                $('#editParticipantForm').attr('action', "{% url 'edit_participant' 0 %}".replace('0', participantId));
+                
+                $('#editParticipantModal').modal('show');
+            });
+            
+            // Delete participant button click
+            $(document).on('click', '.delete-btn', function() {
+                const participantId = $(this).data('id');
+                const row = $(this).closest('tr');
+                const name = row.find('td:nth-child(2)').text();
+                const regdNo = row.find('td:nth-child(3)').text();
+                const email = row.find('td:nth-child(5)').text();
+                
+                $('#deleteParticipantInfo').html(`
+                    <strong>Name:</strong> ${name}<br>
+                    <strong>Registration No:</strong> ${regdNo}<br>
+                    <strong>Email:</strong> ${email}
+                `);
+                
+                $('#confirmDeleteBtn').data('id', participantId);
+                $('#confirmDeleteBtn').data('row', row);
+                $('#deleteConfirmModal').modal('show');
+            });
+            
+            // Confirm delete
+            $('#confirmDeleteBtn').on('click', function() {
+                const participantId = $(this).data('id');
+                const row = $(this).data('row');
+                
+                // Send POST request to server
+                fetch(`/admin-dashboard/delete-participant/${participantId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Remove row from table
+                        table.row(row).remove().draw();
+                        updateStats();
+                        $('#deleteConfirmModal').modal('hide');
+                        
+                        // Show success message
+                        showAlert(data.message || 'Participant deleted successfully!', 'success');
+                    } else {
+                        showAlert('Error deleting participant: ' + data.error, 'danger');
+                    }
+                })
+                .catch(error => {
+                    showAlert('Error deleting participant. Please try again.', 'danger');
+                    console.error('Error:', error);
+                });
+            });
+            
+            // Helper function to get CSRF token
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            
+            // Show alert function
+            function showAlert(message, type) {
+                const alertDiv = $('<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
+                    message +
+                    '<button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                    '</div>');
+                
+                $('.main-content').prepend(alertDiv);
+                
+                // Auto remove alert after 5 seconds
+                setTimeout(() => {
+                    alertDiv.alert('close');
+                }, 5000);
+            }
+            
+            // Update stats (real-time from table data)
+            function updateStats() {
+                const totalParticipants = table.rows({ search: 'applied' }).count();
+                $('#totalParticipants').text(totalParticipants);
+                
+                // Count unique branches from filtered data
+                const branches = new Set();
+                table.column(5, { search: 'applied' }).data().each(function(value, index) {
+                    // Remove HTML tags from badge
+                    var branchText = $(value).text().trim();
+                    if (branchText) {
+                        branches.add(branchText);
+                    }
+                });
+                $('#uniqueBranches').text(branches.size);
+                
+                // Count unique events from filtered data
+                const events = new Set();
+                table.column(7, { search: 'applied' }).data().each(function(value, index) {
+                    // Remove HTML tags from badge
+                    var eventText = $(value).text().trim();
+                    if (eventText) {
+                        events.add(eventText);
+                    }
+                });
+                $('#totalEvents').text(events.size);
+            }
+            
+            // Initialize DataTable events for stats update
+            table.on('draw', function() {
+                updateStats();
+            });
+            
+            // Initial stats update
+            updateStats();
+            
+            // Handle form submissions with better feedback
+            $('#addParticipantForm').on('submit', function(e) {
+                const submitBtn = $(this).find('button[type="submit"]');
+                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Adding...');
+            });
+            
+            $('#editParticipantForm').on('submit', function(e) {
+                const submitBtn = $(this).find('button[type="submit"]');
+                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Saving...');
+            });
+        });
+        
+        // Handle window resize for better mobile experience
+        $(window).on('resize', function() {
+            if ($(window).width() < 768) {
+                $('.table-container').addClass('small-screen');
+            } else {
+                $('.table-container').removeClass('small-screen');
+            }
+        }).trigger('resize');
+    </script>
+</body>
+</html>
