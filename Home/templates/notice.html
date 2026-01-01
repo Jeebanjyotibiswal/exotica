@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements | EXOTICA</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #ff0055;
+            --secondary-color: #00d4ff;
+            --accent-color: #ccff00;
+            --dark-bg: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: #ffffff;
+            --neon-glow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color), 0 0 40px var(--primary-color);
+            --neon-blue: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+        }
+
+        body {
+            background: linear-gradient(-45deg, #0a0a0a, #1a0b2e, #001f3f, #0a0a0a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Navbar - SAME AS HOME PAGE */
+        .navbar {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0.8rem 0;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.8rem;
+            background: linear-gradient(to right, #fff, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s infinite linear;
+            background-size: 200% auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: transparent !important;
+            height: 100%;
+            padding: 0;
+        }
+
+        .navbar-logo {
+            height: 70px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 0;
+            filter: 
+                drop-shadow(0 0 5px var(--secondary-color)) 
+                drop-shadow(0 0 10px rgba(0, 212, 255, 0.3));
+            transition: all 0.3s ease;
+            background: transparent !important;
+            background-color: transparent !important;
+            padding: 0;
+            margin: 0;
+            border: none;
+            mix-blend-mode: screen;
+            align-self: center;
+            max-height: 70px;
+        }
+
+        .navbar-logo:hover {
+            transform: scale(1.05);
+            filter: 
+                drop-shadow(0 0 8px var(--primary-color)) 
+                drop-shadow(0 0 15px rgba(255, 0, 85, 0.4))
+                drop-shadow(0 0 25px rgba(255, 0, 85, 0.2));
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 600;
+            margin-left: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            text-shadow: var(--neon-glow);
+            transform: scale(1.1);
+        }
+
+        .nav-link.active {
+            color: var(--primary-color) !important;
+            text-shadow: var(--neon-glow);
+        }
+
+        .navbar-toggler {
+            padding: 0.25rem 0.5rem;
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+
+        /* Register Button - SAME AS HOME PAGE */
+        .btn-glow {
+            background: transparent;
+            color: white;
+            padding: 8px 25px;
+            border-radius: 50px;
+            border: 2px solid var(--primary-color);
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            font-size: 0.9rem;
+        }
+
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-glow:hover::before {
+            width: 100%;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 30px var(--primary-color);
+            transform: translateY(-5px);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Page Header with Separator */
+        .page-header {
+            padding: 5rem 0 4rem;
+            margin-top: 70px;
+            text-align: center;
+            position: relative;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                var(--glass-border) 25%, 
+                var(--secondary-color) 50%, 
+                var(--glass-border) 75%, 
+                transparent 100%);
+        }
+
+        .page-title {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* Separator */
+        .section-separator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem auto 3rem;
+            position: relative;
+            max-width: 800px;
+        }
+
+        .separator-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+        }
+
+        .separator-icon {
+            margin: 0 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            padding: 1rem;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        .separator-icon i {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.4); }
+            100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
+        }
+
+        /* Notices Container */
+        .notices-container {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+
+        /* Rectangular Notice Cards - Side by Side Layout */
+        .notice-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .notice-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 25px rgba(204, 255, 0, 0.15);
+        }
+
+        .notice-title {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+            min-height: 3.6rem;
+        }
+
+        .notice-date {
+            color: #ffffff !important;
+            font-size: 0.85rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            opacity: 0.9;
+        }
+
+        .notice-date i {
+            margin-right: 8px;
+            color: var(--secondary-color);
+        }
+
+        .notice-content {
+            color: #ffffff !important;
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+        }
+
+        /* Card Footer for attachments */
+        .card-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Attachment Styling */
+        .notice-attachment {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(204, 255, 0, 0.1);
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 8px 16px;
+            color: var(--accent-color) !important;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .notice-attachment:hover {
+            background: rgba(204, 255, 0, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(204, 255, 0, 0.2);
+            color: white !important;
+        }
+
+        .notice-attachment i {
+            margin-right: 8px;
+            font-size: 1rem;
+        }
+
+        /* FIXED: "No attachments" text color */
+        .no-attachment {
+            color: #ffffff !important;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .no-attachment i {
+            margin-right: 8px;
+            color: var(--glass-border);
+        }
+
+        /* Empty State */
+        .no-notices {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 2px dashed var(--glass-border);
+        }
+
+        .no-notices-icon {
+            font-size: 4rem;
+            color: var(--glass-border);
+            margin-bottom: 1.5rem;
+        }
+
+        .no-notices h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .no-notices p {
+            color: #ffffff !important;
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Footer - SAME AS HOME PAGE */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 4rem 0;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-text {
+            color: #ffffff !important;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .footer-small {
+            color: #ffffff !important;
+            opacity: 0.8;
+        }
+
+        .social-icon {
+            color: var(--text-light);
+            font-size: 1.8rem;
+            margin: 0 15px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--primary-color);
+            text-shadow: 0 0 15px var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notice-card {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .notice-card:nth-child(1) { animation-delay: 0.1s; }
+        .notice-card:nth-child(2) { animation-delay: 0.2s; }
+        .notice-card:nth-child(3) { animation-delay: 0.3s; }
+        .notice-card:nth-child(4) { animation-delay: 0.4s; }
+        .notice-card:nth-child(5) { animation-delay: 0.5s; }
+        .notice-card:nth-child(6) { animation-delay: 0.6s; }
+
+        /* Badge for New Announcements (within 24 hours) */
+        .new-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-left: 10px;
+            font-weight: 600;
+            vertical-align: middle;
+            animation: pulse 2s infinite;
+        }
+
+        /* Grid Layout for Cards */
+        .notices-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .notices-container {
+                max-width: 1000px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .notices-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.2rem;
+            }
+            
+            .notice-card {
+                padding: 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                min-height: 60px;
+            }
+            
+            .navbar-logo {
+                height: 45px;
+                max-height: 45px;
+            }
+            
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+            
+            .page-header {
+                margin-top: 60px;
+                padding: 4rem 0 3rem;
+            }
+            
+            .page-title {
+                font-size: 2.8rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .notices-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .notice-title {
+                font-size: 1.4rem;
+                min-height: auto;
+            }
+            
+            .notices-container {
+                padding: 0 15px;
+            }
+            
+            .separator-icon {
+                width: 60px;
+                height: 60px;
+                padding: 0.8rem;
+            }
+            
+            .separator-icon i {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar {
+                padding: 0.6rem 0;
+                min-height: 55px;
+            }
+            
+            .navbar-logo {
+                height: 40px;
+                max-height: 40px;
+            }
+            
+            .navbar-brand {
+                font-size: 1.3rem;
+                gap: 10px;
+            }
+            
+            .page-header {
+                margin-top: 55px;
+                padding: 3rem 0 2.5rem;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1rem;
+            }
+            
+            .notice-card {
+                padding: 1.2rem;
+            }
+            
+            .notice-content {
+                font-size: 0.95rem;
+                -webkit-line-clamp: 3;
+            }
+            
+            .notice-title {
+                font-size: 1.3rem;
+            }
+            
+            .separator-icon {
+                width: 50px;
+                height: 50px;
+                padding: 0.6rem;
+                margin: 0 1rem;
+            }
+            
+            .separator-icon i {
+                font-size: 1.2rem;
+            }
+            
+            footer {
+                padding: 3rem 0;
+            }
+            
+            .social-icon {
+                font-size: 1.5rem;
+                margin: 0 10px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+            
+            .nav-link {
+                margin-left: 0;
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .notice-card {
+                padding: 1rem;
+            }
+            
+            .btn-glow {
+                padding: 6px 20px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% load static %}
+
+    <!-- Navigation - SAME AS HOME PAGE -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'home/Exotica_Logo.jpg' %}" 
+                     alt="EXOTICA Logo" 
+                     class="navbar-logo">
+                EXOTICA <span style="color: white; font-weight: 300;">| NIT</span>
+            </a>
+
+            <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Events</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'notices' %}">Notice</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'mr-miss-nit' %}">Mr. & Miss NIT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_login' %}">Admin</a></li>
+
+                    <!-- REGISTER BUTTON -->
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn-glow" href="{% url 'register' %}">
+                            Register
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header with Separator -->
+    <header class="page-header">
+        <div class="container">
+            <h1 class="page-title">Announcements</h1>
+            <p class="page-subtitle">Stay updated with the latest news, events, and important information from EXOTICA.</p>
+            
+            <!-- Separator -->
+            <div class="section-separator">
+                <div class="separator-line"></div>
+                <div class="separator-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div class="separator-line"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="notices-container">
+        {% if announcements %}
+            <div class="notices-grid">
+                {% for announcement in announcements %}
+                <div class="notice-card">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h2 class="notice-title">
+                            {{ announcement.title }}
+                            {% if announcement.is_new %}
+                            <span class="new-badge">NEW</span>
+                            {% endif %}
+                        </h2>
+                    </div>
+                    <div class="notice-date">
+                        <i class="far fa-calendar"></i>
+                        {{ announcement.created_at|date:"F d, Y - h:i A" }}
+                    </div>
+                    <div class="notice-content">
+                        {{ announcement.content|linebreaks }}
+                    </div>
+                    <div class="card-footer">
+                        {% if announcement.attatchment %}
+                        <a href="{{ announcement.attatchment.url }}" class="notice-attachment" target="_blank">
+                            <i class="fas fa-paperclip"></i> Download Attachment
+                        </a>
+                        {% else %}
+                        <span class="no-attachment">
+                            <i class="fas fa-info-circle"></i> No attachments
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-notices">
+                <div class="no-notices-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <h3>No Announcements Yet</h3>
+                <p>Check back later for updates, announcements, and important information about EXOTICA events and activities.</p>
+            </div>
+        {% endif %}
+    </main>
+
+    <!-- Footer - SAME AS HOME PAGE -->
+    <footer class="text-center">
+        <div class="container">
+            <h4 class="mb-3" style="font-family: 'Playfair Display', serif;">EXOTICA – NIT</h4>
+            <p class="footer-text mb-4">The biggest annual fest of Nalanda Institute of Technology.</p>
+            <div class="mb-4">
+                <a href="https://www.facebook.com/nalandabhubaneswar/" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/nalandabbsr?igsh=MTFyeWFwdGoxYnVrNA==" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://x.com/NALANDABHUBANE1" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="http://www.youtube.com/@nalandabhubaneswar4971" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="footer-small mb-0">&copy; {% now "Y" %} EXOTICA NIT. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Add click animation to notice cards
+        document.querySelectorAll('.notice-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (!e.target.closest('.notice-attachment')) {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                }
+            });
+        });
+
+        // Highlight the active nav link
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname;
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Add scroll effect
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const header = document.querySelector('.page-header');
+                if (header) {
+                    header.style.opacity = 1 - (scrolled / 800);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

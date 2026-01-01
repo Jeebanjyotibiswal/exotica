@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Winners | EXOTICA NIT</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #ff0055;
+            --secondary-color: #00d4ff;
+            --accent-color: #ccff00;
+            --dark-bg: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: #ffffff;
+            --neon-glow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+        }
+
+        body {
+            background: linear-gradient(-45deg, #0a0a0a, #1a0b2e, #001f3f, #0a0a0a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 4rem 0 2rem;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #ff0055, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .position-filter {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: #ffffff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin: 0 5px 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .winners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .winners-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        .winner-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            height: 100%;
+            transition: all 0.4s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        .winner-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .winner-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+            margin: 0 auto 1rem;
+            display: block;
+        }
+
+        .winner-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .winner-game {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .winner-branch {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .position-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .position-1st {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            border: 1px solid #ffd700;
+        }
+
+        .position-2nd {
+            background: rgba(192, 192, 192, 0.2);
+            color: #c0c0c0;
+            border: 1px solid #c0c0c0;
+        }
+
+        .position-3rd {
+            background: rgba(205, 127, 50, 0.2);
+            color: #cd7f32;
+            border: 1px solid #cd7f32;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: 2px solid var(--secondary-color);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 2rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .no-winners {
+            text-align: center;
+            padding: 4rem;
+        }
+
+        .no-winners i {
+            font-size: 4rem;
+            color: var(--glass-border);
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid #ffd700;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .featured-badge i {
+            color: #ffd700;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 576px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .filter-btn {
+                padding: 6px 15px;
+                font-size: 0.9rem;
+                margin: 0 3px 8px;
+            }
+            
+            .winner-avatar {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .winner-name {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% load static %}
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top" style="background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.2);">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'home/Exotica_Logo.jpg' %}" 
+                     alt="NIT Logo" 
+                     class="navbar-logo" 
+                     style="height: 70px; width: auto; object-fit: contain; border-radius: 0; filter: drop-shadow(0 0 5px var(--secondary-color));">
+                EXOTICA <span style="color: white; font-weight: 300;">| NIT</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container" style="padding-top: 100px;">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-crown me-3"></i>All Exotica Winners
+            </h1>
+            <p class="lead" style="color: #cccccc;">Celebrating winners from all positions</p>
+        </div>
+        
+        <!-- Position Filter Buttons -->
+        <div class="position-filter">
+            <a href="?position=all" class="filter-btn {% if not request.GET.position or request.GET.position == 'all' %}active{% endif %}">
+                All Positions
+            </a>
+            <a href="?position=1st" class="filter-btn {% if request.GET.position == '1st' %}active{% endif %}">
+                🥇 1st Place
+            </a>
+            <a href="?position=2nd" class="filter-btn {% if request.GET.position == '2nd' %}active{% endif %}">
+                🥈 2nd Place
+            </a>
+            <a href="?position=3rd" class="filter-btn {% if request.GET.position == '3rd' %}active{% endif %}">
+                🥉 3rd Place
+            </a>
+        </div>
+        
+        {% if winners %}
+        <div class="winners-grid">
+            {% for winner in winners %}
+            <div class="winner-card">
+                <!-- Featured Badge -->
+                {% if winner.featured %}
+                <div class="featured-badge" title="Featured on Home Page">
+                    <i class="fas fa-star"></i>
+                </div>
+                {% endif %}
+                
+                {% if winner.photo %}
+                <img src="{{ winner.photo.url }}" 
+                     alt="{{ winner.winner }}" 
+                     class="winner-avatar">
+                {% else %}
+                <div style="width: 120px; height: 120px; background: linear-gradient(45deg, #1a1a1a, #2a2a2a); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid var(--primary-color); margin: 0 auto 1rem;">
+                    <i class="fas fa-user fa-3x" style="color: var(--secondary-color);"></i>
+                </div>
+                {% endif %}
+                
+                <h4 class="winner-name">{{ winner.winner }}</h4>
+                <p class="winner-game">{{ winner.game }}</p>
+                <p class="winner-branch">{{ winner.branch }}</p>
+                
+                <!-- Position Badge with different colors -->
+                <span class="position-badge 
+                    {% if winner.position == '1st' %}position-1st
+                    {% elif winner.position == '2nd' %}position-2nd
+                    {% else %}position-3rd{% endif %}">
+                    {% if winner.position == '1st' %}🥇
+                    {% elif winner.position == '2nd' %}🥈
+                    {% else %}🥉{% endif %}
+                    {{ winner.position }} Place
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-winners">
+            <i class="fas fa-trophy"></i>
+            <h3 style="color: #cccccc;">No winners found</h3>
+            <p style="color: #999999;">Try selecting a different position filter</p>
+        </div>
+        {% endif %}
+
+        <div class="text-center mt-5">
+            <a href="{% url 'home' %}" class="back-btn">
+                <i class="fas fa-arrow-left me-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Add active class to filter buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUrl = window.location.href;
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            filterButtons.forEach(btn => {
+                if (btn.classList.contains('active')) {
+                    btn.style.background = 'rgba(0, 212, 255, 0.2)';
+                    btn.style.borderColor = 'var(--secondary-color)';
+                    btn.style.color = 'white';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Mr & Miss NIT | EXOTICA Admin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff0055;
+            --secondary-color: #00d4ff;
+            --accent-color: #ccff00;
+            --dark-bg: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: #ffffff;
+            --neon-glow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(-45deg, #0a0a0a, #1a0b2e, #001f3f, #0a0a0a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        h1, h2, h3, h4 { 
+            font-family: 'Playfair Display', serif; 
+            color: #ffffff !important;
+            margin: 0;
+        }
+        
+        /* Mobile Navbar */
+        .mobile-navbar {
+            display: none;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            padding: 0.8rem 1rem;
+            height: 60px;
+        }
+        
+        .mobile-navbar .container-fluid {
+            padding: 0;
+        }
+        
+        .mobile-navbar .navbar-brand {
+            font-size: 1.2rem;
+            padding: 0;
+        }
+        
+        .mobile-navbar .navbar-toggler {
+            padding: 0.25rem 0.5rem;
+            font-size: 1rem;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .mobile-navbar .navbar-collapse {
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 0 0 15px 15px;
+            border: 1px solid var(--glass-border);
+            border-top: none;
+            padding: 1rem;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+        }
+        
+        .mobile-navbar .nav-item {
+            margin: 0.3rem 0;
+        }
+        
+        .mobile-navbar .nav-link {
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .mobile-navbar .nav-link.active {
+            background: rgba(255, 0, 85, 0.2);
+            color: white;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
+        }
+        
+        /* Desktop Sidebar */
+        .dashboard-container { 
+            display: block; 
+            min-height: 100vh;
+            width: 100%;
+        }
+        
+        .sidebar { 
+            background: rgba(10, 10, 10, 0.95); 
+            backdrop-filter: blur(20px); 
+            border-right: 1px solid var(--glass-border); 
+            height: 100vh; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 260px; 
+            padding: 2rem 1rem; 
+            z-index: 1000; 
+            box-shadow: 5px 0 30px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+        }
+        
+        .sidebar-brand { 
+            font-size: 1.6rem; 
+            font-weight: 800; 
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            text-decoration: none; 
+            display: block; 
+            margin-bottom: 2rem; 
+            text-align: center; 
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.3); 
+        }
+        
+        .nav-pills .nav-link { 
+            color: #ffffff; 
+            border-radius: 12px; 
+            margin-bottom: 0.8rem; 
+            text-align: left; 
+            padding: 12px 20px; 
+            transition: all 0.3s ease; 
+            border: 1px solid transparent; 
+            font-size: 0.95rem;
+        }
+        
+        .nav-pills .nav-link.active { 
+            background: rgba(255, 0, 85, 0.2); 
+            color: #ffffff; 
+            border: 1px solid var(--primary-color); 
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3); 
+        }
+        
+        .nav-pills .nav-link:hover:not(.active) { 
+            background: rgba(255, 255, 255, 0.15); 
+            color: #ffffff; 
+            transform: translateX(5px); 
+        }
+        
+        .nav-pills i { 
+            width: 25px; 
+            margin-right: 10px; 
+            font-size: 1rem;
+        }
+        
+        .main-content { 
+            margin-left: 260px; 
+            padding: 2rem; 
+            min-height: 100vh;
+            width: calc(100% - 260px);
+            transition: all 0.3s ease;
+        }
+        
+        .admin-card { 
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 20px; 
+            padding: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2); 
+            transition: transform 0.3s; 
+            width: 100%;
+        }
+        
+        .admin-card:hover { 
+            transform: translateY(-3px); 
+            border-color: var(--secondary-color); 
+        }
+        
+        /* Button Styles */
+        .btn { 
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .btn-primary { 
+            background: var(--secondary-color); 
+            border: none; 
+            color: #000000 !important; 
+            font-weight: 600;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); 
+            padding: 0.75rem 1.5rem;
+        }
+        
+        .btn-primary:hover { 
+            background: #00c4eb; 
+            color: #000000 !important;
+            transform: translateY(-2px);
+        }
+        
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+        
+        .btn-outline-danger {
+            border-color: var(--primary-color);
+            color: var(--primary-color) !important;
+        }
+        
+        .btn-outline-danger:hover {
+            background: rgba(255, 0, 85, 0.2);
+            border-color: var(--primary-color);
+            color: white !important;
+        }
+        
+        .btn-outline-secondary {
+            color: #ffffff !important;
+            border-color: var(--glass-border);
+        }
+        
+        .btn-outline-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff !important;
+            border-color: var(--secondary-color);
+        }
+        
+        /* Form Controls */
+        .form-control, .form-select, textarea {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid var(--glass-border);
+            color: #ffffff !important;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            border-radius: 10px;
+            width: 100%;
+        }
+        
+        .form-control:focus, .form-select:focus, textarea:focus {
+            background: rgba(255, 255, 255, 0.15) !important;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+            color: #ffffff !important;
+            outline: none;
+        }
+        
+        .form-label {
+            color: #ffffff !important;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            display: block;
+        }
+        
+        /* Text Visibility */
+        .text-visible {
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        /* Photo Preview */
+        .photo-preview {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid var(--secondary-color);
+            margin: 10px 0;
+        }
+        
+        .current-photo {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .formatting-hint {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #ffffff;
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00c4eb;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .main-content {
+                margin-left: 240px;
+                width: calc(100% - 240px);
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .mobile-navbar {
+                display: flex !important;
+            }
+            
+            .sidebar {
+                display: none !important;
+            }
+            
+            .main-content {
+                margin-left: 0 !important;
+                padding: 1rem !important;
+                margin-top: 60px !important;
+                width: 100% !important;
+            }
+            
+            .admin-card {
+                padding: 1.2rem;
+                border-radius: 15px;
+                margin-bottom: 1rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem !important;
+            }
+            
+            h4 {
+                font-size: 1.2rem !important;
+            }
+            
+            .photo-preview {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 0.8rem !important;
+            }
+            
+            .admin-card {
+                padding: 1rem;
+                border-radius: 12px;
+            }
+            
+            .d-flex.justify-content-between.align-items-center.mb-4.flex-wrap {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .d-flex.justify-content-between.align-items-center.mb-4.flex-wrap > div {
+                margin-bottom: 1rem;
+                width: 100%;
+            }
+            
+            .photo-preview {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .mobile-navbar {
+                padding: 0.6rem 0.8rem;
+                height: 55px;
+            }
+            
+            .mobile-navbar .navbar-brand {
+                font-size: 1.1rem;
+            }
+            
+            .mobile-navbar .navbar-collapse {
+                top: 55px;
+            }
+            
+            .main-content {
+                padding: 0.6rem !important;
+                margin-top: 55px !important;
+            }
+            
+            .admin-card {
+                padding: 0.8rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem !important;
+            }
+            
+            h4 {
+                font-size: 1.1rem !important;
+            }
+            
+            .photo-preview {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .btn {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .mobile-navbar .navbar-brand {
+                font-size: 1rem;
+            }
+            
+            .mobile-navbar .nav-link {
+                font-size: 0.9rem;
+                padding: 0.6rem 0.8rem;
+            }
+            
+            .main-content {
+                padding: 0.5rem !important;
+            }
+            
+            .admin-card {
+                padding: 0.6rem;
+                border-radius: 10px;
+            }
+            
+            .btn {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            .mobile-navbar,
+            .sidebar,
+            .btn {
+                display: none !important;
+            }
+            
+            .main-content {
+                margin-left: 0 !important;
+                margin-top: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+            }
+            
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            
+            .admin-card {
+                background: white !important;
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Navbar -->
+    <nav class="mobile-navbar navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <span style="font-weight:800; background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); 
+                    -webkit-background-clip: text; -webkit-text-fill-color: transparent;">EXOTICA</span>
+                <span style="font-weight:300; color:var(--secondary-color); font-size: 0.9rem;">Admin</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobileNavbarMenu">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_dashboard' %}">
+                            <i class="fas fa-users me-2"></i>Participants
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'event_management' %}">
+                            <i class="fas fa-calendar-alt me-2"></i>Manage Events
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'upload-result' %}">
+                            <i class="fas fa-trophy me-2"></i>Upload Results
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'announcment' %}">
+                            <i class="fas fa-bullhorn me-2"></i>Announcements
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">
+                            <i class="fas fa-crown me-2"></i>Manage Mr & Miss NIT
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{% url 'admin_logout' %}">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="dashboard-container">
+        <!-- Desktop Sidebar -->
+        <div class="sidebar">
+            <a href="#" class="sidebar-brand">EXOTICA <span style="font-weight:300; color:white; font-size: 0.9rem;">Admin</span></a>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="{% url 'admin_dashboard' %}" class="nav-link">
+                        <i class="fas fa-users"></i> Participants
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'event_management' %}" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i> Manage Events
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'upload-result' %}" class="nav-link">
+                        <i class="fas fa-trophy"></i> Upload Results
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'announcment' %}" class="nav-link">
+                        <i class="fas fa-bullhorn"></i> Announcements
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link active">
+                        <i class="fas fa-crown"></i> Manage Mr & Miss NIT
+                    </a>
+                </li>
+            </ul>
+            <div style="margin-top: auto; padding-top: 1.5rem;">
+                <a href="{% url 'admin_logout' %}" class="nav-link text-danger" style="border: 1px solid rgba(255,0,0,0.3); text-align: center; padding: 0.8rem; font-size: 0.9rem;">
+                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Page Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+                <div>
+                    <h2 class="mb-1 text-visible"><i class="fas fa-crown me-2"></i>Manage Mr & Miss NIT</h2>
+                    <p class="text-visible mb-0" style="font-size: 0.95rem;">Update details for Mr & Miss NIT competition</p>
+                </div>
+            </div>
+
+            <!-- Messages - Fixed visibility -->
+            {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); color: white !important; padding: 0.8rem 1rem; font-size: 0.9rem;">
+                    <i class="fas fa-check-circle me-2"></i>{{ message }}
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" style="padding: 0.5rem;"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="admin-card">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="admin-card h-100">
+                                <h4 class="mb-4 text-visible" style="color: var(--secondary-color);">
+                                    <i class="fas fa-king me-2"></i>Mr. NIT Details
+                                </h4>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Year</label>
+                                    <select name="year" class="form-select" required>
+                                        <option value="">Select Year</option>
+                                        <option value="2024" {% if mr_miss_nit and mr_miss_nit.year == "2024" %}selected{% endif %}>2024</option>
+                                        <option value="2025" {% if mr_miss_nit and mr_miss_nit.year == "2025" %}selected{% endif %}>2025</option>
+                                        <option value="2026" {% if mr_miss_nit and mr_miss_nit.year == "2026" %}selected{% endif %}>2026</option>
+                                        <option value="2027" {% if mr_miss_nit and mr_miss_nit.year == "2027" %}selected{% endif %}>2027</option>
+                                        <option value="2028" {% if mr_miss_nit and mr_miss_nit.year == "2028" %}selected{% endif %}>2028</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Mr. NIT Name</label>
+                                    <input type="text" name="mr_name" class="form-control" 
+                                           value="{{ mr_miss_nit.mr_name|default:'' }}" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Mr. NIT Photo</label>
+                                    <input type="file" name="mr_photo" class="form-control" accept="image/*">
+                                    {% if mr_miss_nit and mr_miss_nit.mr_photo %}
+                                    <div class="current-photo">
+                                        <small class="text-visible">Current Photo:</small><br>
+                                        <img src="{{ mr_miss_nit.mr_photo.url }}" alt="Current Mr. NIT photo" class="photo-preview">
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Department</label>
+                                    <input type="text" name="mr_department" class="form-control" 
+                                           value="{{ mr_miss_nit.mr_department|default:'' }}" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Description (Optional)</label>
+                                    <textarea name="mr_description" class="form-control" rows="3">{{ mr_miss_nit.mr_description|default:'' }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="admin-card h-100">
+                                <h4 class="mb-4 text-visible" style="color: var(--primary-color);">
+                                    <i class="fas fa-queen me-2"></i>Miss NIT Details
+                                </h4>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Year</label>
+                                    <select name="miss_year" class="form-select" required>
+                                        <option value="">Select Year</option>
+                                        <option value="2024" {% if mr_miss_nit and mr_miss_nit.miss_year == "2024" %}selected{% endif %}>2024</option>
+                                        <option value="2025" {% if mr_miss_nit and mr_miss_nit.miss_year == "2025" %}selected{% endif %}>2025</option>
+                                        <option value="2026" {% if mr_miss_nit and mr_miss_nit.miss_year == "2026" %}selected{% endif %}>2026</option>
+                                        <option value="2027" {% if mr_miss_nit and mr_miss_nit.miss_year == "2027" %}selected{% endif %}>2027</option>
+                                        <option value="2028" {% if mr_miss_nit and mr_miss_nit.miss_year == "2028" %}selected{% endif %}>2028</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Miss NIT Name</label>
+                                    <input type="text" name="miss_name" class="form-control" 
+                                           value="{{ mr_miss_nit.miss_name|default:'' }}" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Miss NIT Photo</label>
+                                    <input type="file" name="miss_photo" class="form-control" accept="image/*">
+                                    {% if mr_miss_nit and mr_miss_nit.miss_photo %}
+                                    <div class="current-photo">
+                                        <small class="text-visible">Current Photo:</small><br>
+                                        <img src="{{ mr_miss_nit.miss_photo.url }}" alt="Current Miss NIT photo" class="photo-preview">
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Department</label>
+                                    <input type="text" name="miss_department" class="form-control" 
+                                           value="{{ mr_miss_nit.miss_department|default:'' }}" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Description (Optional)</label>
+                                    <textarea name="miss_description" class="form-control" rows="3">{{ mr_miss_nit.miss_description|default:'' }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="admin-card mb-4">
+                    <h4 class="mb-4 text-visible" style="color: var(--secondary-color);">
+                        <i class="fas fa-info-circle me-2"></i>Event Content
+                    </h4>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Event Description</label>
+                        <textarea name="event_description" class="form-control" rows="5" required>{% if mr_miss_nit %}{{ mr_miss_nit.event_description }}{% else %}Mr. & Miss NIT transcends beyond a conventional beauty pageant - it's a platform that celebrates personality, intelligence, and charisma. This prestigious competition brings together the most talented individuals from our institute to showcase their unique qualities.
+
+Contestants will navigate through multiple challenging rounds including professional ramp walks, creative talent showcases, and thought-provoking Q&A sessions. The competition is designed to test not just appearance, but confidence, communication skills, and overall persona.{% endif %}</textarea>
+                        <div class="formatting-hint">
+                            <small><i class="fas fa-info-circle me-1"></i> Write as normal paragraphs. Press Enter for new paragraphs.</small>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Judging Criteria</label>
+                        <div class="formatting-hint">
+                            <small><i class="fas fa-lightbulb me-1"></i> Format your judging criteria as you want it to appear. You can use bold text, headings, or bullet points.</small>
+                        </div>
+                        <textarea name="judging_criteria" class="form-control" rows="10" required>{% if mr_miss_nit %}{{ mr_miss_nit.judging_criteria }}{% else %}Confidence & Stage Presence
+Command of the stage and overall confidence
+
+Attire & Grooming
+Style, presentation, and attention to detail
+
+Communication Skills
+Articulation and clarity of expression
+
+Talent & Creativity
+Originality and skill in talent presentation
+
+Intelligence & Wit
+Quick thinking and intelligent responses{% endif %}</textarea>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                        <i class="fas fa-save me-2"></i>
+                        {% if mr_miss_nit %}Update Content{% else %}Create Content{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Handle mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+            
+            if (navbarToggler && navbarCollapse) {
+                navbarToggler.addEventListener('click', function() {
+                    navbarCollapse.classList.toggle('show');
+                });
+                
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!navbarToggler.contains(event.target) && !navbarCollapse.contains(event.target)) {
+                        navbarCollapse.classList.remove('show');
+                    }
+                });
+                
+                // Close mobile menu when clicking a link
+                document.querySelectorAll('.mobile-navbar .nav-link').forEach(link => {
+                    link.addEventListener('click', function() {
+                        navbarCollapse.classList.remove('show');
+                    });
+                });
+            }
+            
+            // Set year for Miss NIT to match Mr. NIT if not already set
+            const yearSelect = document.querySelector('select[name="year"]');
+            const missYearSelect = document.querySelector('select[name="miss_year"]');
+            
+            if (yearSelect && missYearSelect && !missYearSelect.value) {
+                missYearSelect.value = yearSelect.value;
+            }
+            
+            // Sync year changes if needed
+            yearSelect.addEventListener('change', function() {
+                if (missYearSelect && !missYearSelect.value) {
+                    missYearSelect.value = this.value;
+                }
+            });
+        });
+    </script>
+</body>
+</html>       

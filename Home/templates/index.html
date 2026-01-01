@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXOTICA – NIT | The Ultimate College Event</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #ff0055;
+            --secondary-color: #00d4ff;
+            --accent-color: #ccff00;
+            --dark-bg: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: #ffffff;
+            --neon-glow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color), 0 0 40px var(--primary-color);
+            --neon-blue: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+        }
+
+        body {
+            background: linear-gradient(-45deg, #0a0a0a, #1a0b2e, #001f3f, #0a0a0a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0.8rem 0; /* Slightly reduced padding */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            min-height: 70px; /* Fixed navbar height */
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.8rem;
+            background: linear-gradient(to right, #fff, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s infinite linear;
+            background-size: 200% auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            /* Ensure brand container is transparent */
+            background-color: transparent !important;
+            height: 100%; /* Take full height of navbar */
+            padding: 0;
+        }
+
+        .navbar-logo {
+            height: 70px; /* Increased logo size */
+            width: auto;
+            object-fit: contain;
+            /* Remove border-radius for logo */
+            border-radius: 0;
+            /* Enhanced glow effect */
+            filter: 
+                drop-shadow(0 0 5px var(--secondary-color)) 
+                drop-shadow(0 0 10px rgba(0, 212, 255, 0.3));
+            transition: all 0.3s ease;
+            /* CRITICAL: Force transparent background */
+            background: transparent !important;
+            background-color: transparent !important;
+            /* Ensure no padding/borders */
+            padding: 0;
+            margin: 0;
+            border: none;
+            /* For better transparency handling */
+            mix-blend-mode: screen;
+            /* Align vertically */
+            align-self: center;
+            /* Prevent logo from affecting navbar height */
+            max-height: 70px;
+        }
+
+        .navbar-logo:hover {
+            transform: scale(1.05);
+            filter: 
+                drop-shadow(0 0 8px var(--primary-color)) 
+                drop-shadow(0 0 15px rgba(255, 0, 85, 0.4))
+                drop-shadow(0 0 25px rgba(255, 0, 85, 0.2));
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 600;
+            margin-left: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            text-shadow: var(--neon-glow);
+            transform: scale(1.1);
+        }
+
+        /* Adjust navbar toggler for proper alignment */
+        .navbar-toggler {
+            padding: 0.25rem 0.5rem;
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 70px; /* Account for fixed navbar height */
+        }
+
+        /* YEH NAYA CLASS - CSS se background image remove kiya */
+        .hero-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.3; /* Transparency adjust kar sakte hain */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(1px);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+            padding: 3rem;
+            background: rgba(0, 0, 0, 0.5); /* Thoda dark kar diya for better readability */
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 0 50px rgba(255, 0, 85, 0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #fff;
+            text-shadow: var(--neon-glow);
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from {
+                text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+            }
+
+            to {
+                text-shadow: 0 0 20px var(--primary-color), 0 0 40px var(--primary-color), 0 0 60px var(--primary-color);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+            text-shadow: var(--neon-blue);
+        }
+
+        .btn-glow {
+            background: transparent;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            border: 2px solid var(--primary-color);
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-glow:hover::before {
+            width: 100%;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 30px var(--primary-color);
+            transform: translateY(-5px);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Countdown */
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .countdown-item {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--secondary-color);
+            min-width: 110px;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+            transition: transform 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .countdown-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.4);
+        }
+
+        .countdown-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 10px var(--secondary-color);
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--secondary-color);
+        }
+
+        /* Highlights Section */
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 15px auto 0;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .highlight-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            height: 100%;
+            position: relative;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .highlight-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            filter: grayscale(50%);
+            transition: filter 0.4s;
+        }
+
+        .highlight-card:hover .highlight-img {
+            filter: grayscale(0%);
+        }
+
+        .highlight-body {
+            padding: 2rem;
+        }
+
+        .highlight-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--secondary-color);
+            font-weight: 700;
+        }
+
+        .highlight-text {
+            color: #ffffff !important;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Gallery Section Styles */
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            cursor: pointer;
+            height: 250px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* Winners Section */
+        .winner-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.4s ease;
+            height: 100%;
+        }
+
+        .winner-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .winner-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        .winner-info h5 {
+            margin: 0;
+            color: var(--text-light);
+        }
+
+        .winner-info p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+        /* Winner Badge के लिए extra CSS (existing CSS के साथ add करें) */
+.position-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    margin-top: 5px;
+}
+
+.position-1st {
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    border: 1px solid #ffd700;
+}
+
+.winner-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    transition: transform 0.3s ease;
+}
+
+.winner-card:hover .winner-avatar {
+    transform: scale(1.1);
+}
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 4rem 0;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-text {
+            color: #ffffff !important;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .footer-small {
+            color: #ffffff !important;
+            opacity: 0.8;
+        }
+
+        .social-icon {
+            color: var(--text-light);
+            font-size: 1.8rem;
+            margin: 0 15px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--primary-color);
+            text-shadow: 0 0 15px var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .countdown-container {
+                gap: 0.5rem;
+                flex-wrap: wrap;
+            }
+
+            .countdown-item {
+                min-width: 80px;
+                padding: 1rem;
+            }
+
+            .countdown-number {
+                font-size: 2rem;
+            }
+
+            .navbar-logo {
+                height: 45px; /* Slightly smaller on tablets */
+                max-height: 45px;
+            }
+
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+
+            .navbar {
+                padding: 0.6rem 0;
+                min-height: 60px;
+            }
+
+            .hero-section {
+                margin-top: 60px;
+            }
+            
+            /* Mobile par image aur dark */
+            .hero-content {
+                background: rgba(0, 0, 0, 0.7);
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-logo {
+                height: 40px; /* Slightly smaller on phones */
+                max-height: 40px;
+            }
+
+            .navbar-brand {
+                font-size: 1.3rem;
+                gap: 10px;
+            }
+
+            .navbar {
+                padding: 0.5rem 0;
+                min-height: 55px;
+            }
+
+            .hero-section {
+                margin-top: 55px;
+            }
+
+            .nav-link {
+                margin-left: 0;
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% load static %}
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'home/Exotica_Logo.jpg' %}" 
+                     alt="NIT Logo" 
+                     class="navbar-logo">
+                EXOTICA <span style="color: white; font-weight: 300;">| NIT</span>
+            </a>
+
+            <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'notices' %}">Notice</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'mr-miss-nit' %}">Mr. & Miss NIT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_login' %}">Admin</a></li>
+
+                    <!-- FIXED REGISTER BUTTON -->
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn-glow" href="{% url 'register' %}" 
+                           style="padding: 8px 25px; font-size: 0.9rem;">
+                            Register
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <!-- YEH BACKGROUND IMAGE HTML MEIN - Django static tag ke saath -->
+        <div class="hero-bg-image" 
+             style="background-image: url('{% static 'home/Nit_new.jpg' %}'); 
+                    opacity: 0.6;">
+        </div>
+        
+        <div class="hero-overlay"></div>
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="hero-content">
+                        <h1 class="hero-title">EXOTICA 2026</h1>
+                        <h2 class="hero-subtitle">Nalanda Institute of Technology,BBSR</h2>
+                        <p class="lead mb-4"><i class="fas fa-calendar-alt me-2"
+                                style="color: var(--primary-color);"></i> March 15-17, 2026 &nbsp;|&nbsp; <i
+                                class="fas fa-map-marker-alt me-2" style="color: var(--primary-color);"></i> NIT Campus
+                            Grounds</p>
+
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <a href="{% url 'register' %}" class="btn-glow">Register Now</a>
+                            <a href="{% url 'events' %}" class="btn-glow"
+                                style="background: transparent; border: 2px solid var(--secondary-color); box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);">Explore
+                                Events</a>
+                        </div>
+
+                        <!-- Countdown -->
+                        <div class="countdown-container" id="countdown">
+                            <div class="countdown-item">
+                                <span class="countdown-number" id="days">00</span>
+                                <span class="countdown-label">Days</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-number" id="hours">00</span>
+                                <span class="countdown-label">Hours</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-number" id="minutes">00</span>
+                                <span class="countdown-label">Mins</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-number" id="seconds">00</span>
+                                <span class="countdown-label">Secs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Highlights Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title">Event Highlights</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="highlight-card">
+                        <div
+                            style="height: 200px; background: linear-gradient(45deg, #1a1a1a, #2a2a2a); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-code fa-3x" style="color: var(--secondary-color);"></i>
+                        </div>
+                        <div class="highlight-body">
+                            <h3 class="highlight-title">Tech Battles</h3>
+                            <p class="highlight-text">Unleash your coding prowess in our hackathons and debugging
+                                contests.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="highlight-card">
+                        <div
+                            style="height: 200px; background: linear-gradient(45deg, #1a1a1a, #2a2a2a); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-music fa-3x" style="color: var(--primary-color);"></i>
+                        </div>
+                        <div class="highlight-body">
+                            <h3 class="highlight-title">Cultural Fiesta</h3>
+                            <p class="highlight-text">Dance, music, and drama that will set the stage on fire.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="highlight-card">
+                        <div
+                            style="height: 200px; background: linear-gradient(45deg, #1a1a1a, #2a2a2a); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-running fa-3x" style="color: #ffcc00;"></i>
+                        </div>
+                        <div class="highlight-body">
+                            <h3 class="highlight-title">Sports Mania</h3>
+                            <p class="highlight-text">Cricket, Volleyball, and more. Compete for glory!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="py-5" id="gallery">
+        <div class="container">
+            <h2 class="section-title">Hall of Fame</h2>
+            <p class="text-center mb-5 footer-text">Celebrating the champions of yesteryears</p>
+            
+            <!-- Winners Section -->
+<div class="mb-5">
+    <h3 class="mb-4 border-start border-4 border-danger ps-3" style="color: var(--primary-color);">
+        {% if winners %}
+            Exotica Latest Champions
+        {% else %}
+            Exotica Champions
+        {% endif %}
+    </h3>
+    
+    {% if winners %}
+    <div class="row g-4">
+        {% for winner in winners %}
+        <div class="col-md-6 col-lg-4">
+            <div class="winner-card">
+                {% if winner.photo %}
+                <img src="{{ winner.photo.url }}" 
+                     alt="{{ winner.winner }}" 
+                     class="winner-avatar"
+                     style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color);">
+                {% else %}
+                <div style="width: 80px; height: 80px; background: linear-gradient(45deg, #1a1a1a, #2a2a2a); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--primary-color);">
+                    <i class="fas fa-user fa-2x" style="color: var(--secondary-color);"></i>
+                </div>
+                {% endif %}
+                <div class="winner-info">
+                    <h5>{{ winner.winner }}</h5>
+                    <p class="mb-1" style="color: var(--secondary-color); font-weight: 600;">
+                        {{ winner.game }}
+                    </p>
+                    <small class="footer-small">{{ winner.branch }}</small>
+                    <br>
+                    <span class="position-badge position-1st" 
+                          style="font-size: 0.7rem; padding: 2px 8px; margin-top: 5px; display: inline-block;">
+                        🥇 {{ winner.position }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    {% else %}
+    <div class="text-center py-4" style="background: rgba(255,255,255,0.05); border-radius: 15px;">
+        <i class="fas fa-trophy fa-3x mb-3" style="color: var(--glass-border);"></i>
+        <p class="footer-text mb-0">No winners added yet. Stay tuned for updates!</p>
+    </div>
+    {% endif %}
+    
+    <!-- View All Winners Button -->
+    <div class="text-center mt-4">
+        <a href="{% url 'all-winners' %}" class="btn-glow" style="padding: 10px 30px; font-size: 0.9rem;">
+            <i class="fas fa-crown me-2"></i> View All Winners
+        </a>
+    </div>
+</div>
+
+            <!-- Gallery Grid -->
+<div>
+    <h3 class="mb-4 border-start border-4 border-info ps-3" style="color: var(--secondary-color);">Gallery</h3>
+    <div class="row g-3">
+        <!-- Gallery Item 1 - Inauguration -->
+        <div class="col-md-4">
+            <div class="gallery-item">
+                <img src="{% static 'Home/inauguration.jpg' %}" 
+                     alt="Inauguration Ceremony" 
+                     class="gallery-img">
+                <div class="gallery-overlay">
+                    <h5>Inauguration Ceremony</h5>
+                    <p class="small footer-text">Lighting the lamp</p>
+                </div>
+            </div>
+        </div>
+        <!-- Gallery Item 2 - Dance -->
+        <div class="col-md-4">
+            <div class="gallery-item">
+                <img src="{% static 'Home/grp_dance.jpg' %}" 
+                     alt="Dance Performance" 
+                     class="gallery-img">
+                <div class="gallery-overlay">
+                    <h5>Dance Performance</h5>
+                    <p class="small footer-text">Group Dance Finals</p>
+                </div>
+            </div>
+        </div>
+        <!-- Gallery Item 3 - Prize -->
+        <div class="col-md-4">
+            <div class="gallery-item">
+                <img src="{% static 'Home/prize.jpg' %}" 
+                     alt="Prize Distribution" 
+                     class="gallery-img">
+                <div class="gallery-overlay">
+                    <h5>Prize Distribution</h5>
+                    <p class="small footer-text">Chief Guest awarding winners</p>
+                </div>
+            </div>
+        </div>
+        <!-- Gallery Item 4 - Concert -->
+        <div class="col-md-8">
+            <div class="gallery-item">
+                <img src="{% static 'Home/concert_night.jpg' %}" 
+                     alt="Concert Night" 
+                     class="gallery-img">
+                <div class="gallery-overlay">
+                    <h5>Concert Night</h5>
+                    <p class="small footer-text">Star Night Performance</p>
+                </div>
+            </div>
+        </div>
+        <!-- Gallery Item 5 - Fashion -->
+        <div class="col-md-4">
+            <div class="gallery-item">
+                <img src="{% static 'Home/singer_.jpg' %}" 
+                     alt="Fashion Show" 
+                     class="gallery-img">
+                <div class="gallery-overlay">
+                    <h5>Musical Night</h5>
+                    <p class="small footer-text">Special Guest Performer</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <h4 class="mb-3" style="font-family: 'Playfair Display', serif;">EXOTICA – NIT</h4>
+            <p class="footer-text mb-4">The biggest annual fest of Nalanda Institute of Technology.</p>
+            <div class="mb-4">
+                <a href="https://www.facebook.com/nalandabhubaneswar/" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/nalandabbsr?igsh=MTFyeWFwdGoxYnVrNA==" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://x.com/NALANDABHUBANE1" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="http://www.youtube.com/@nalandabhubaneswar4971" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="footer-small mb-0">&copy; 2025 EXOTICA NIT. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script>
+        // Countdown Timer Logic
+        const eventDate = new Date('March 15, 2026 09:00:00').getTime();
+
+        const countdownFunction = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+            document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                document.getElementById('countdown').innerHTML = "<h3 class='text-white'>Event Started!</h3>";
+            }
+        }, 1000);
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
